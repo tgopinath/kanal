@@ -1,0 +1,113 @@
+[
+ {
+  "id": "lettuce-cup",
+  "src": "objaverse/2df67b7644d742d2b0c198bedfd7c3f2.glb",
+  "size": 0.24,
+  "maxTris": 60000
+ },
+ {
+  "id": "sashimi",
+  "src": "objaverse/419d358d21a24b2cb0ef4d50b849e268.glb",
+  "size": 0.32,
+  "maxTris": 80000,
+  "trimBelow": 0.06
+ },
+ {
+  "id": "flatbread",
+  "src": "objaverse/0e6df6c6ca5a4140b5ace6a957046ce9.glb",
+  "size": 0.34,
+  "maxTris": 60000,
+  "trimBelow": 0.3
+ },
+ {
+  "id": "prime-rib",
+  "src": "objaverse/0d72ef49ea764361a865207e4d0d8252.glb",
+  "size": 0.42,
+  "maxTris": 60000
+ },
+ {
+  "id": "bistecca",
+  "src": "objaverse/969285ae788c41cd914387cecf088708.glb",
+  "size": 0.32,
+  "maxTris": 60000
+ },
+ {
+  "id": "pear-tart",
+  "src": "objaverse/8bd39f148aab472397a68930839a9aac.glb",
+  "size": 0.24,
+  "maxTris": 70000
+ },
+ {
+  "id": "apple-pie",
+  "src": "objaverse/1e96b1fd3d3c42f3aef4f3cdb6051746.glb",
+  "size": 0.21,
+  "maxTris": 50000
+ },
+ {
+  "id": "strawberry-tart",
+  "src": "objaverse/09af8624f011406c974b7cd4678650db.glb",
+  "size": 0.12,
+  "maxTris": 40000
+ },
+ {
+  "id": "carrot-cake",
+  "src": "polyhaven/carrot_cake/carrot_cake.gltf",
+  "size": 0.23,
+  "maxTris": 60000
+ },
+ {
+  "id": "filter-coffee",
+  "src": "objaverse/f5e8252067fc4fa5a1f79f4e3d7b7c45.glb",
+  "size": 0.1,
+  "fit": "height",
+  "maxTris": 40000
+ },
+ {
+  "id": "tea-service",
+  "src": "polyhaven/tea_set_01/tea_set_01.gltf",
+  "size": 0.36,
+  "maxTris": 60000,
+  "compose": [
+   {
+    "node": "tea_set_01_teapot_01",
+    "at": [
+     -0.1,
+     0,
+     0.0
+    ]
+   },
+   {
+    "node": "tea_set_01_teapot_01_lid",
+    "with": "tea_set_01_teapot_01"
+   },
+   {
+    "node": "tea_set_01_saucer_circular_03",
+    "at": [
+     0.1,
+     0,
+     0.04
+    ]
+   },
+   {
+    "node": "tea_set_01_cup_small_01",
+    "at": [
+     0.1,
+     0.012,
+     0.04
+    ]
+   },
+   {
+    "node": "tea_set_01_sugar_cup_01",
+    "at": [
+     0.06,
+     0,
+     -0.09
+    ]
+   },
+   {
+    "node": "tea_set_01_sugar_cup_01_lid",
+    "with": "tea_set_01_sugar_cup_01"
+   }
+  ]
+ }
+]

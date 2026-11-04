@@ -1,0 +1,14 @@
+node_modules
+dist
+models-src/**/*.gltf
+models-src/**/*.bin
+models-src/**/textures
+models-src/**/*.glb
+android/app/build
+android/build
+android/.gradle
+android/app/src/main/assets/public
+ios/build
+ios/Web
+.DS_Store
+*.apk

@@ -1,0 +1,20 @@
+<!doctype html><meta charset="utf-8"><title>usdz</title>
+<script type="module">
+// Converts one GLB to USDZ in the browser with three.js (the same exporter <model-viewer> uses for AR Quick Look).
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+import { USDZExporter } from './USDZExporterJpeg.js';
+import { MeshStandardMaterial } from 'three';
+window.convert = async id => {
+  const gltf = await new GLTFLoader().loadAsync(`/models-src/ios/${id}.glb`);
+  // The exporter only writes standard (PBR) materials; scans saved as unlit get an equivalent matte material.
+  gltf.scene.traverse(o => {
+    if (!o.isMesh) return;
+    const fix = m => m.isMeshStandardMaterial ? m : new MeshStandardMaterial({ map: m.map, color: m.color, roughness: 0.9, metalness: 0, transparent: m.transparent, opacity: m.opacity, side: m.side });
+    o.material = Array.isArray(o.material) ? o.material.map(fix) : fix(o.material);
+  });
+  const bytes = await new USDZExporter().parseAsync(gltf.scene, { quickLookCompatible: true, maxTextureSize: 1024 });
+  let s = ''; const b = new Uint8Array(bytes); for (let i = 0; i < b.length; i += 0x8000) s += String.fromCharCode.apply(null, b.subarray(i, i + 0x8000));
+  return btoa(s);
+};
+document.body.dataset.ready = '1';
+</script>

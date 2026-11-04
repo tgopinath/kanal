@@ -1,0 +1,30 @@
+<!doctype html><meta charset="utf-8"><title>lockup</title>
+<!-- The KANAL · MENU lockup and the three ring controls, drawn once as a transparent PNG (1024 × 512 = 32 × 16 cm on the table).
+     The native AR views lay this image flat on the table plane. Ring centres: x = 0.30 / 0.50 / 0.70, y = 0.70 of the image. -->
+<script type="module">import '@fontsource/lato/700.css'; import '@fontsource/lato/400.css';</script>
+<style>
+html,body{margin:0;background:transparent}
+#c{position:relative;width:1024px;height:512px;color:#ecd8ae;font-family:Lato}
+.top{position:absolute;left:0;right:0;top:56px;display:flex;justify-content:center;align-items:center;gap:36px}
+.mark{width:120px;height:120px}
+.name{font:700 52px/1 Lato;letter-spacing:.42em;color:#f6eddd;margin-right:-.42em}
+.rule{width:2px;height:84px;background:#d9bd8488}
+.menu{font:700 40px/1 Lato;letter-spacing:.5em;color:#ecd8ae;margin-right:-.5em}
+.ring{position:absolute;top:calc(70% - 72px);width:144px;height:144px;margin-left:-72px;border-radius:50%;border:5px solid #ecd8aecc;box-sizing:border-box;display:grid;place-items:center;background:#0b080540}
+.ring.main{width:168px;height:168px;margin-left:-84px;top:calc(70% - 84px);border-color:#ecd8ae}
+.ring svg{width:64px;height:64px}
+</style>
+<div id="c">
+  <div class="top">
+    <svg class="mark" viewBox="0 0 64 64" fill="none" stroke="#ecd8ae" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="32" cy="32" r="29"/><path d="M32 13c6 7 11 13.5 11 21.5a11 11 0 0 1-22 0c0-5.2 2.6-9.2 5.6-12.6.6 4.2 2.4 6.6 4.9 7.6-1.4-5.4-.6-11 .5-16.5z"/><path d="M32 36.5c2.2 2 3.6 3.9 3.6 6a3.6 3.6 0 0 1-7.2 0c0-2.1 1.4-4 3.6-6z"/><path d="M20 52h24"/></svg>
+    <span class="name">KANAL</span><span class="rule"></span><span class="menu">MENU</span>
+  </div>
+  <div class="ring" style="left:30%"><svg viewBox="0 0 24 24" fill="none" stroke="#f6eddd" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 7l-5 5 5 5"/></svg></div>
+  <div class="ring main" style="left:50%"><svg id="mid" viewBox="0 0 24 24" fill="none" stroke="#f6eddd" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"></svg></div>
+  <div class="ring" style="left:70%"><svg viewBox="0 0 24 24" fill="none" stroke="#f6eddd" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 7l5 5-5 5"/></svg></div>
+</div>
+<script>
+const s=new URLSearchParams(location.search).get('state');
+document.getElementById('mid').innerHTML = s==='play' ? '<path d="M9.5 7.2v9.6l7.4-4.8z"/>' : '<path d="M9.5 7.5v9M14.5 7.5v9"/>';
+document.fonts.ready.then(()=>setTimeout(()=>document.body.dataset.ready='1',300));
+</script>

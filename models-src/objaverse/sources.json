@@ -1,0 +1,174 @@
+[
+ {
+  "cat": "salad",
+  "uid": "2df67b7644d742d2b0c198bedfd7c3f2",
+  "path": "glbs/000-033/2df67b7644d742d2b0c198bedfd7c3f2.glb",
+  "name": "Lettuce bowl salad by Chef Yoshida",
+  "faces": 69092,
+  "lic": "by",
+  "user": "Nantsune Co. Ltd",
+  "username": "nantsune",
+  "tags": [
+   "cooking",
+   "salad",
+   "hela",
+   "3dscan",
+   "trnio-plus",
+   "hela_japan",
+   "hela_spice"
+  ],
+  "thumb": "https://media.sketchfab.com/models/2df67b7644d742d2b0c198bedfd7c3f2/thumbnails/98261494206641a398d820d9bd69e581/5717fb0b7f7a47e79740432f2d568ef8.jpeg",
+  "url": "https://sketchfab.com/3d-models/2df67b7644d742d2b0c198bedfd7c3f2"
+ },
+ {
+  "cat": "sushi",
+  "uid": "419d358d21a24b2cb0ef4d50b849e268",
+  "path": "glbs/000-085/419d358d21a24b2cb0ef4d50b849e268.glb",
+  "name": "ある日の海幸の刺身盛り合わせ3人前",
+  "faces": 299383,
+  "lic": "by",
+  "user": "keizi666",
+  "username": "keizi666",
+  "tags": [
+   "zephyr",
+   "3df"
+  ],
+  "thumb": "https://media.sketchfab.com/models/419d358d21a24b2cb0ef4d50b849e268/thumbnails/cba2389ca7de406aa5f13373fdc932a1/59f753c90a4844a28fa3c6e9264c5abc.jpeg",
+  "url": "https://sketchfab.com/3d-models/419d358d21a24b2cb0ef4d50b849e268"
+ },
+ {
+  "cat": "pizza",
+  "uid": "0e6df6c6ca5a4140b5ace6a957046ce9",
+  "path": "glbs/000-091/0e6df6c6ca5a4140b5ace6a957046ce9.glb",
+  "name": "Homemade pizza",
+  "faces": 3107,
+  "lic": "by",
+  "user": "christophe.bougere",
+  "username": "christophe.bougere",
+  "tags": [
+   "3dscannerapp"
+  ],
+  "thumb": "https://media.sketchfab.com/models/0e6df6c6ca5a4140b5ace6a957046ce9/thumbnails/39a0327554824461a489adec18465d86/f0ee7e9117b141d28794e11c3fe8e336.jpeg",
+  "url": "https://sketchfab.com/3d-models/0e6df6c6ca5a4140b5ace6a957046ce9"
+ },
+ {
+  "cat": "steak_(food)",
+  "uid": "0d72ef49ea764361a865207e4d0d8252",
+  "path": "glbs/000-135/0d72ef49ea764361a865207e4d0d8252.glb",
+  "name": "Prime rib on wood board",
+  "faces": 33696,
+  "lic": "by",
+  "user": "alban",
+  "username": "alban",
+  "tags": [
+   "prime",
+   "rib",
+   "cote",
+   "meet",
+   "boeuf",
+   "polycam"
+  ],
+  "thumb": "https://media.sketchfab.com/models/0d72ef49ea764361a865207e4d0d8252/thumbnails/35021853bedd4ceea9ed8f7df0bea062/00e1f06d5262434482dfd681ec38b7d1.jpeg",
+  "url": "https://sketchfab.com/3d-models/0d72ef49ea764361a865207e4d0d8252"
+ },
+ {
+  "cat": "steak_(food)",
+  "uid": "969285ae788c41cd914387cecf088708",
+  "path": "glbs/000-137/969285ae788c41cd914387cecf088708.glb",
+  "name": "Florence Steak - Fiorentina bistecca",
+  "faces": 42630,
+  "lic": "by",
+  "user": "Shahriar Shahrabi",
+  "username": "shahriyarshahrabi",
+  "tags": [
+   "food",
+   "italy",
+   "steak",
+   "florence",
+   "photogrammetry",
+   "scan"
+  ],
+  "thumb": "https://media.sketchfab.com/models/969285ae788c41cd914387cecf088708/thumbnails/c4ef8d4c7f4d42dfa7f45bac55195150/24bd0eaabba04d959c086911c673946a.jpeg",
+  "url": "https://sketchfab.com/3d-models/969285ae788c41cd914387cecf088708"
+ },
+ {
+  "cat": "pie",
+  "uid": "8bd39f148aab472397a68930839a9aac",
+  "path": "glbs/000-081/8bd39f148aab472397a68930839a9aac.glb",
+  "name": "Tarte poire bordaloue",
+  "faces": 186037,
+  "lic": "by",
+  "user": "MadeleineMirabelle",
+  "username": "MadeleineMirabelle",
+  "tags": [
+   "tarte",
+   "poire",
+   "patisserie",
+   "pastery",
+   "metashape",
+   "agisoft",
+   "bordaloue"
+  ],
+  "thumb": "https://media.sketchfab.com/models/8bd39f148aab472397a68930839a9aac/thumbnails/a1f5816dd3624cab8c9fbb285bf8098c/9e0e9312b5db4803bcb5f1383a0ad68f.jpeg",
+  "url": "https://sketchfab.com/3d-models/8bd39f148aab472397a68930839a9aac"
+ },
+ {
+  "cat": "pie",
+  "uid": "1e96b1fd3d3c42f3aef4f3cdb6051746",
+  "path": "glbs/000-010/1e96b1fd3d3c42f3aef4f3cdb6051746.glb",
+  "name": "Slice of apple pie on a coffee plate",
+  "faces": 37104,
+  "lic": "by",
+  "user": "alban",
+  "username": "alban",
+  "tags": [
+   "apple",
+   "pie",
+   "slice",
+   "polycam"
+  ],
+  "thumb": "https://media.sketchfab.com/models/1e96b1fd3d3c42f3aef4f3cdb6051746/thumbnails/365799ce2de842118332d0aefe351bbf/5be6887aee3245909e187a58aa008b1e.jpeg",
+  "url": "https://sketchfab.com/3d-models/1e96b1fd3d3c42f3aef4f3cdb6051746"
+ },
+ {
+  "cat": "mug",
+  "uid": "f5e8252067fc4fa5a1f79f4e3d7b7c45",
+  "path": "glbs/000-045/f5e8252067fc4fa5a1f79f4e3d7b7c45.glb",
+  "name": "Pottery coffee cup",
+  "faces": 50000,
+  "lic": "by",
+  "user": "harukaf",
+  "username": "harukaf",
+  "tags": [
+   "pottery",
+   "photogrammetry",
+   "coffe-cup"
+  ],
+  "thumb": "https://media.sketchfab.com/models/f5e8252067fc4fa5a1f79f4e3d7b7c45/thumbnails/a39c82634fb5491faa47de1cdd28023d/d32aacbcb4fe436e9fc0577ac80cf677.jpeg",
+  "url": "https://sketchfab.com/3d-models/f5e8252067fc4fa5a1f79f4e3d7b7c45"
+ },
+ {
+  "cat": "pie",
+  "uid": "09af8624f011406c974b7cd4678650db",
+  "path": "glbs/000-038/09af8624f011406c974b7cd4678650db.glb",
+  "name": "Strawberry pie - The Smith Restaurant",
+  "faces": 25000,
+  "lic": "by",
+  "user": "Guillermo",
+  "username": "guillermosainz",
+  "tags": [
+   "smith",
+   "3d-scan",
+   "pie",
+   "dinner",
+   "newyork",
+   "nyc",
+   "dessert",
+   "strawberry",
+   "scan",
+   "3dscan"
+  ],
+  "thumb": "https://media.sketchfab.com/models/09af8624f011406c974b7cd4678650db/thumbnails/005d4d0cb8464eeca34cb49450379724/4e00d8fef2684831addbb2dbaf680e6a.jpeg",
+  "url": "https://sketchfab.com/3d-models/09af8624f011406c974b7cd4678650db"
+ }
+]
