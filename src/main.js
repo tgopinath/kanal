@@ -10,7 +10,7 @@ import './kolam/kolam.css';
 import './styles.css';
 import '@google/model-viewer';
 
-import { RESTAURANT, COURSES, DISHES, ENV_CREDITS, byId, inCourse, formatPrice, formatQty } from './dishes.js';
+import { RESTAURANT, COURSES, DISHES, ENV_CREDITS, VENUE_ID, VENUES, byId, inCourse, formatPrice, formatQty, lockupHTML } from './dishes.js';
 import { icon, MARK } from './icons.js';
 import { Native, platform } from './native.js';
 import { mountTable } from './table.js';
@@ -38,7 +38,7 @@ function setQty(id, q) {
 
 // The table comes from the QR code on it (see orders.js).
 const scan = Orders.readTableFromUrl();
-let table = Orders.currentTable();
+let table = Orders.currentTable(VENUE_ID);
 let orderNote = '';
 const tableLabel = () => (table ? `Table ${table}` : 'No table yet');
 
@@ -52,8 +52,7 @@ function toast(msg) {
 }
 
 // ---------- shared pieces ----------
-const lockup = (small = false) => `
-  <span class="lockup ${small ? 'lockup-sm' : ''}">${MARK}<span class="lockup-words"><span class="lockup-name">KANAL</span><span class="lockup-ta" lang="ta">${RESTAURANT.tamil}</span></span></span>`;
+const lockup = (small = false) => lockupHTML(small);
 
 const price = d => `<span class="qty-price"><span>${formatQty(d)}</span><span class="dot" aria-hidden="true">·</span><span>${formatPrice(d.price)}</span></span>`;
 
@@ -97,9 +96,9 @@ function viewMenu() {
   </header>
   <main id="main" class="menu" tabindex="-1">
     <section class="hero" aria-labelledby="hero-title">
-      <div class="hero-media"><img src="${poster(hero)}" alt="${esc(hero.name)} on an oak board" width="640" height="640"></div>
+      <div class="hero-media"><img src="${poster(hero)}" alt="${esc(hero.name)} ${esc(RESTAURANT.heroAlt)}" width="640" height="640"></div>
       <div class="hero-text">
-        <p class="eyebrow">Tonight’s signature</p>
+        <p class="eyebrow">${esc(RESTAURANT.heroLabel)}</p>
         <h1 id="hero-title" class="display">${esc(hero.name)}</h1>
         <div class="gold-rule" aria-hidden="true"></div>
         <p class="hero-meta">${price(hero)}</p>
@@ -172,7 +171,7 @@ function viewDish(id) {
     </div>
 
     <article class="dish-info">
-      <p class="eyebrow">${course.label.replace(/s$/, '')}${d.tags.length ? ' · ' + d.tags.map(esc).join(' · ') : ''}</p>
+      <p class="eyebrow">${course.one}${d.tags.length ? ' · ' + d.tags.map(esc).join(' · ') : ''}</p>
       <h1 class="display">${esc(d.name)}</h1>
       <div class="gold-rule" aria-hidden="true"></div>
       <p class="hero-meta">${price(d)}</p>
@@ -223,12 +222,13 @@ function viewTable(id) {
   return mountTable(app.querySelector('#scene'), {
     dishes: DISHES, start: DISHES.indexOf(d), native, platform: platform(),
     lockupHTML: lockup(), icon, esc, formatPrice, formatQty, model, usdz, poster, asset,
+    courseLabel: c => COURSES.find(x => x.id === c)?.one || '',
     onAdd: x => { setQty(x.id, (shortlist[x.id] || 0) + 1); toast(`${x.name} added to your order`); },
     onIndex: i => { current.tableId = DISHES[i].id; history.replaceState(null, '', `#/table/${DISHES[i].id}`); },
     openNative: async i => {
       const payload = DISHES.map(x => ({ id: x.id, name: x.name, qty: formatQty(x), price: formatPrice(x.price), model: `models/${x.id}.glb`, usdz: `models/${x.id}.usdz` }));
       try {
-        const r = await Native.open(payload, i);
+        const r = await Native.open(payload, i, { lockup: RESTAURANT.lockupAR, wordmark: RESTAURANT.wordmark });
         window.__kanalLastAR = r;
         return r && typeof r.index === 'number' ? r.index : -1;
       } catch (e) { toast(String(e?.message || 'AR could not start on this phone')); return -1; }
@@ -260,7 +260,7 @@ function seatPicker() {
 function viewOrder() {
   const items = Object.entries(shortlist).map(([id, q]) => [byId(id), q]).filter(([d]) => d);
   const total = items.reduce((s, [d, q]) => s + d.price * q, 0);
-  const sent = table ? Orders.mine(table) : [];
+  const sent = table ? Orders.mine(VENUE_ID, table) : [];
   const rounds = sent.filter(o => o.kind === 'food').sort((a, b) => b.placedAt - a.placedAt);
   const bill = sent.find(o => o.kind === 'bill' && o.status !== 'served');
   const billTotal = rounds.reduce((s, o) => s + o.total, 0);
@@ -307,7 +307,7 @@ function viewOrder() {
     </section>` : ''}
 
     ${!items.length && !rounds.length ? `<div class="empty">
-        <div class="empty-mark">${MARK}</div>
+        <div class="empty-mark">${RESTAURANT.mark}</div>
         <h1 class="display display-sm">Nothing ordered yet</h1>
         <p>Add dishes from the menu, then send them straight to the kitchen. Your food is brought to ${table ? `Table ${table}` : 'your table'}; you can keep adding rounds all evening.</p>
         <a class="k-btn k-btn-primary" href="#/">Browse the menu</a>
@@ -328,35 +328,35 @@ function viewOrder() {
   app.querySelector('#seat')?.addEventListener('submit', e => {
     e.preventDefault();
     const v = app.querySelector('#seat-n').value; if (!v) return;
-    Orders.setTable(v); table = v; rerender(); toast(`Seated at Table ${v}`);
+    Orders.setTable(v, VENUE_ID); table = v; rerender(); toast(`Seated at Table ${v}`);
   });
   app.querySelector('#leave')?.addEventListener('click', () => { Orders.leaveTable(); table = null; rerender(); });
   const dlg = app.querySelector('#confirm');
   app.querySelector('#send')?.addEventListener('click', () => dlg.showModal());
   app.querySelector('#confirm-no')?.addEventListener('click', () => dlg.close());
   app.querySelector('#confirm-yes')?.addEventListener('click', () => {
-    const o = Orders.placeOrder({ table, note: orderNote, items: items.map(([d, q]) => ({ id: d.id, name: d.name, qty: q, price: d.price })) });
+    const o = Orders.placeOrder({ venue: VENUE_ID, table, note: orderNote, items: items.map(([d, q]) => ({ id: d.id, name: d.name, qty: q, price: d.price })) });
     dlg.close();
     shortlist = {}; store.set('shortlist', shortlist); setQty('', 0); orderNote = '';
     seen.set(o.id, o.status);
     rerender(); scrollTo(0, 0);
     toast(`Round ${o.round} sent. The kitchen has it.`);
   });
-  app.querySelector('#bill')?.addEventListener('click', () => { Orders.requestBill(table); rerender(); toast('Bill requested'); });
+  app.querySelector('#bill')?.addEventListener('click', () => { Orders.requestBill(VENUE_ID, table); rerender(); toast('Bill requested'); });
   return Orders.subscribe(() => { if (document.activeElement?.id !== 'note') rerender(); });
 }
 
 function viewAbout() {
   const t = store.get('theme', 'system');
   app.innerHTML = `
-  <header class="topbar"><span class="topbar-title topbar-title-lg">About Kanal</span>${lockup(true)}</header>
+  <header class="topbar"><span class="topbar-title topbar-title-lg">About ${esc(RESTAURANT.name)}</span>${lockup(true)}</header>
   <main id="main" class="about" tabindex="-1">
     <section class="about-intro">
-      <div class="about-mark">${MARK}</div>
+      <div class="about-mark">${RESTAURANT.mark}</div>
       <p class="eyebrow">${esc(RESTAURANT.line)}</p>
-      <h1 class="display"><span lang="ta">${RESTAURANT.tamil}</span> means ember.</h1>
+      <h1 class="display">${RESTAURANT.aboutTitle}</h1>
       <div class="gold-rule" aria-hidden="true"></div>
-      <p>Kanal cooks over a single wood fire: meat rested beside it, bread baked against its floor, pears poached in what is left of the heat. This menu lets you see each plate at its real size, on your own table, before you order. Kanal is a fictional restaurant made for a design portfolio.</p>
+      <p>${esc(RESTAURANT.about)}</p>
     </section>
 
     <section class="how" aria-labelledby="how-title">
@@ -388,12 +388,18 @@ function viewAbout() {
       <p class="muted">Design and code by Gopinath Thandapani, on the Kolam design system.</p>
     </section>
 
+    <section aria-labelledby="venue-title">
+      <h2 id="venue-title" class="section-title">Restaurants on this menu</h2>
+      <p class="muted">The same table menu runs every restaurant on the platform; each table’s QR code opens its own. Switch here to try another.</p>
+      <div class="k-tabs" role="list">${Object.values(VENUES).map(v => `<a class="k-tab venue-tab" role="listitem" href="./index.html?venue=${v.RESTAURANT.id}#/" ${v.RESTAURANT.id === VENUE_ID ? 'aria-current="page"' : ''}>${esc(v.RESTAURANT.name)}</a>`).join('')}</div>
+    </section>
+
     <section aria-labelledby="staff-title">
       <h2 id="staff-title" class="section-title">For the restaurant</h2>
       <p class="muted">Orders go straight from each table to the kitchen screen, which marks them cooking, on their way and served. Each table has its own QR code.</p>
       <div class="staff-links">
-        <a class="k-btn k-btn-outline" href="./kitchen.html">${icon('flame')}Kitchen screen</a>
-        <a class="k-btn k-btn-outline" href="./tables.html">${icon('qr')}Table QR codes</a>
+        <a class="k-btn k-btn-outline" href="./kitchen.html?venue=${VENUE_ID}">${icon('flame')}Kitchen screen</a>
+        <a class="k-btn k-btn-outline" href="./tables.html?venue=${VENUE_ID}">${icon('qr')}Table QR codes</a>
       </div>
     </section>
   </main>
@@ -417,7 +423,7 @@ function route() {
   current.cleanup = typeof r === 'function' ? r : null;
   document.body.dataset.view = view || 'menu';
   const t = { dish: byId(id)?.name, table: 'On the table', order: 'Your order', about: 'About' }[view];
-  document.title = t ? `${t} · Kanal` : 'Kanal — Table Menu';
+  document.title = t ? `${t} · ${RESTAURANT.name}` : `${RESTAURANT.name} — Table Menu`;
 }
 let lastHash = location.hash;
 function rerender() { const y = scrollY; route(); scrollTo(0, y); }
@@ -431,10 +437,10 @@ addEventListener('hashchange', () => {
 });
 // Tell the guest when the kitchen moves one of their rounds along, wherever they are in the menu.
 const seen = new Map();
-if (table) Orders.mine(table).forEach(o => seen.set(o.id, o.status));
+if (table) Orders.mine(VENUE_ID, table).forEach(o => seen.set(o.id, o.status));
 Orders.subscribe(() => {
   if (!table) return;
-  for (const o of Orders.mine(table)) {
+  for (const o of Orders.mine(VENUE_ID, table)) {
     const was = seen.get(o.id); seen.set(o.id, o.status);
     if (!was || was === o.status) continue;
     if (o.kind === 'bill' && o.status === 'served') toast('Your bill is on its way');
@@ -445,7 +451,7 @@ Orders.subscribe(() => {
 if (location.hash === '' && scan?.table) location.hash = '#/';
 route();
 if (scan?.error) toast(scan.error);
-else if (scan?.table) toast(`Welcome to Kanal. You’re at Table ${scan.table}.`);
+else if (scan?.table) toast(`Welcome to ${RESTAURANT.name}. You’re at Table ${scan.table}.`);
 
 if ('serviceWorker' in navigator && location.protocol === 'https:' && platform() === 'web') {
   navigator.serviceWorker.register('./sw.js').catch(() => {});

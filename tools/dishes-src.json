@@ -295,5 +295,217 @@
     "with": "tea_set_01_sugar_cup_01"
    }
   ]
+ },
+ {
+  "id": "classic-burger",
+  "src": "burger/classic-burger.glb",
+  "size": 0.12,
+  "maxTris": 60000,
+  "look": {
+   "rough": [
+    0.4,
+    0.8
+   ],
+   "normal": 1.0,
+   "coat": 0.3,
+   "coatRough": 0.25,
+   "sat": 1.06
+  }
+ },
+ {
+  "id": "cheeseburger",
+  "src": "burger/cheeseburger.glb",
+  "size": 0.11,
+  "maxTris": 60000,
+  "look": {
+   "rough": [
+    0.45,
+    0.82
+   ],
+   "normal": 0.9,
+   "coat": 0.2,
+   "coatRough": 0.3,
+   "sat": 1.05
+  }
+ },
+ {
+  "id": "vegan-double-burger",
+  "src": "burger/vegan-double-burger.glb",
+  "size": 0.24,
+  "maxTris": 70000,
+  "look": {
+   "rough": [
+    0.42,
+    0.82
+   ],
+   "normal": 1.0,
+   "coat": 0.25,
+   "coatRough": 0.25,
+   "sat": 1.06
+  }
+ },
+ {
+  "id": "crispy-chicken-burger",
+  "src": "burger/crispy-chicken-burger.glb",
+  "size": 0.26,
+  "maxTris": 60000,
+  "islands": 0.01,
+  "look": {
+   "rough": [
+    0.42,
+    0.8
+   ],
+   "normal": 1.0,
+   "coat": 0.25,
+   "coatRough": 0.25,
+   "sat": 1.06
+  }
+ },
+ {
+  "id": "fries-bowl",
+  "src": "burger/fries-bowl.glb",
+  "size": 0.15,
+  "maxTris": 40000,
+  "islands": 0.01,
+  "look": {
+   "rough": [
+    0.45,
+    0.8
+   ],
+   "normal": 1.0,
+   "coat": 0.2,
+   "coatRough": 0.3,
+   "sat": 1.05
+  },
+  "remove": [
+   {
+    "below": 0.6,
+    "sat": [
+     0,
+     0.16
+    ]
+   },
+   {
+    "below": 0.6,
+    "lum": [
+     0,
+     0.3
+    ]
+   }
+  ],
+  "vessel": {
+   "kind": "plate",
+   "color": [
+    0.8,
+    0.78,
+    0.74
+   ],
+   "rough": 0.22,
+   "clearcoat": 0.6,
+   "pad": 1.12
+  }
+ },
+ {
+  "id": "nuggets",
+  "src": "burger/chicken-nugget.glb",
+  "size": 0.055,
+  "maxTris": 8000,
+  "repeat": [
+   [
+    0.06,
+    0.0,
+    70
+   ],
+   [
+    -0.06,
+    0.0,
+    140
+   ],
+   [
+    0.0,
+    0.055,
+    200
+   ],
+   [
+    0.0,
+    -0.055,
+    20
+   ],
+   [
+    0.055,
+    0.06,
+    300
+   ],
+   [
+    -0.055,
+    -0.055,
+    110
+   ]
+  ],
+  "vessel": {
+   "kind": "slate",
+   "color": [
+    0.05,
+    0.048,
+    0.046
+   ],
+   "rough": 0.8,
+   "pad": 1.15
+  },
+  "look": {
+   "rough": [
+    0.5,
+    0.82
+   ],
+   "normal": 1.2,
+   "coat": 0.15,
+   "coatRough": 0.3,
+   "sat": 1.05
+  }
+ },
+ {
+  "id": "hot-dog",
+  "src": "burger/hot-dog.glb",
+  "size": 0.19,
+  "maxTris": 20000
+ },
+ {
+  "id": "milkshake",
+  "src": "burger/milkshake.glb",
+  "size": 0.17,
+  "fit": "height",
+  "maxTris": 8000,
+  "remove": [
+   {
+    "reach": 0.7
+   }
+  ],
+  "islands": 0.05,
+  "look": {
+   "rough": [
+    0.35,
+    0.7
+   ],
+   "normal": 0.6,
+   "coat": 0.4,
+   "coatRough": 0.15,
+   "sat": 1.04
+  }
+ },
+ {
+  "id": "brownie",
+  "src": "burger/candy-cane-brownie.glb",
+  "size": 0.09,
+  "maxTris": 50000,
+  "look": {
+   "rough": [
+    0.35,
+    0.78
+   ],
+   "normal": 1.0,
+   "coat": 0.35,
+   "coatRough": 0.2,
+   "sat": 1.05
+  }
  }
 ]

@@ -9,7 +9,7 @@ import './kolam/kolam.css';
 import './styles.css';
 import './kitchen.css';
 import * as Orders from './orders.js';
-import { DISHES, formatPrice } from './dishes.js';
+import { DISHES, RESTAURANT, VENUE_ID, formatPrice, lockupHTML } from './dishes.js';
 import { icon, MARK } from './icons.js';
 
 const root = document.getElementById('kds');
@@ -57,7 +57,7 @@ function ticket(o, col, fresh) {
 }
 
 function render() {
-  const all = Orders.list();
+  const all = Orders.list().filter(o => (o.venue || 'kanal') === VENUE_ID);
   const food = all.filter(o => o.kind === 'food');
   const bills = all.filter(o => o.kind === 'bill' && o.status !== 'served');
   const served = food.filter(o => o.status === 'served').sort((a, b) => b.updatedAt - a.updatedAt);
@@ -69,14 +69,14 @@ function render() {
 
   root.innerHTML = `
   <header class="kds-top">
-    <span class="lockup lockup-sm">${MARK}<span class="lockup-words"><span class="lockup-name">KANAL</span><span class="lockup-ta" lang="ta">கனல்</span></span></span>
+    ${lockupHTML(true)}
     <h1 class="kds-title">Kitchen pass</h1>
     <p class="kds-stats"><span><strong>${food.length - served.length}</strong> open</span><span><strong>${tables.size}</strong> tables</span><span><strong>${served.length}</strong> served tonight</span></p>
     <div class="kds-tools">
       <button class="k-btn k-btn-sm k-btn-ghost" type="button" id="sound" aria-pressed="${sound}">${icon('bell')}${sound ? 'Sound on' : 'Sound off'}</button>
       <button class="k-btn k-btn-sm k-btn-outline" type="button" id="demo">${icon('plus')}Demo order</button>
-      <a class="k-btn k-btn-sm k-btn-ghost" href="./tables.html">${icon('qr')}Table codes</a>
-      <a class="k-btn k-btn-sm k-btn-ghost" href="./index.html">${icon('menu')}Guest menu</a>
+      <a class="k-btn k-btn-sm k-btn-ghost" href="./tables.html?venue=${VENUE_ID}">${icon('qr')}Table codes</a>
+      <a class="k-btn k-btn-sm k-btn-ghost" href="./index.html?venue=${VENUE_ID}">${icon('menu')}Guest menu</a>
     </div>
   </header>
   ${bills.length ? `<section class="bills" aria-label="Bill requests">${bills.map(b => `
@@ -104,7 +104,7 @@ function render() {
     const t = Orders.TABLES[Math.floor(Math.random() * Orders.TABLES.length)];
     const pick = [...DISHES].sort(() => Math.random() - 0.5).slice(0, 1 + Math.floor(Math.random() * 3));
     const all = Orders.list();
-    const o = { id: 'o' + Date.now().toString(36), kind: 'food', table: t, device: 'demo', round: all.filter(x => x.table === t && x.kind === 'food').length + 1,
+    const o = { id: 'o' + Date.now().toString(36), kind: 'food', venue: VENUE_ID, table: t, device: 'demo', round: all.filter(x => (x.venue || 'kanal') === VENUE_ID && x.table === t && x.kind === 'food').length + 1,
       items: pick.map(d => ({ id: d.id, name: d.name, qty: 1 + (Math.random() < 0.3), price: d.price })), note: Math.random() < 0.4 ? 'No nuts please, one guest is allergic' : '',
       status: 'received', placedAt: Date.now(), updatedAt: Date.now() };
     o.total = o.items.reduce((s, i) => s + i.qty * i.price, 0);
@@ -113,6 +113,7 @@ function render() {
   });
 }
 
+document.title = `Kitchen · ${RESTAURANT.name}`;
 Orders.subscribe(render);
 render();
 // Tick the ticket timers without re-rendering the board.

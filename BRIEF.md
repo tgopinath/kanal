@@ -106,3 +106,17 @@ Guests order straight to the kitchen; no server takes the order.
 
 ## Dish visuals (2026-11-05)
 Scans shipped as `KHR_materials_unlit` with roughness 1, so they looked pasted on. `tools/process-models.mjs` now (per-dish `look` in `tools/dishes-src.json`) makes them lit PBR: smooth normals, a normal map and a gloss/roughness map derived from each scan's colour, clearcoat on wet/glazed dishes, and part of the colour fed back as emission so baked capture light doesn't go muddy. Lighting is a custom warm HDRI (`tools/make-hdr.mjs` → `public/env/hearth.hdr`) with `tone-mapping="neutral"`; stages have a warm spotlight pool. Posters are 1024 px. Before/after: `node tools/compare.mjs <id> b.tone-mapping=neutral` (needs old GLBs in `public/old/`).
+
+## Proper cut-outs (2026-11-05)
+The old `trimBelow` height slice left torn paper and broken plates. `tools/process-models.mjs` now takes per-dish rules in `dishes-src.json`:
+- `remove`: drop triangles by the scan's real texture colour (`sat`, `lum`, `hue`), height band (`below`/`above`/`reach`) and distance from centre (`outside`).
+- `islands`: drop loose fragments below a fraction of the surface area.
+- `vessel`: a clean modelled plate (`plate`) or slate (`slate`), or a real CC0 model (`src`), replacing a broken scanned vessel. The food is lifted onto it.
+- `repeat`: extra servings of one scan (six nuggets).
+Check with `node tools/inspect.mjs /models/<id>.glb out.jpg` (three views on magenta). Note: Vite serves public files at `/models/…`, not `/public/models/…`.
+
+## Second restaurant: Bun Kadai (2026-11-05)
+`src/venues/<id>.js` each hold a brand (name, wordmark, Tamil sub-line, mark, copy, AR lockup prefix), courses (with singular `one`) and dishes. `src/dishes.js` resolves the active venue: URL `?venue=` → a scanned table code (no venue = Kanal) → the seated table → the last venue opened → Kanal. Staff pages (`kitchen.html`, `tables.html`) follow their URL only. The theme is under `[data-venue="bun"]` in `styles.css`: charcoal, mustard #f2b33d (light #8a5a00), Lato 900 for brand type, and a procedural brushed-steel counter from `tools/make-counter.mjs`. Orders, table codes and kitchen tickets are tagged with the venue. Native AR receives `lockup` (`ar/bun-lockup`) in the payload. About → "Restaurants on this menu" switches between them.
+- Bun Kadai menu: 9 CC BY scans from Objaverse (`models-src/burger/sources.json`). There's no soda (no unbranded scan exists). The Double Stack (a Big Mac scan) was dropped for quality and brand reasons. Stand-ins are labelled: the nuggets are one scan repeated, and the shake is a rough scan.
+- The table view now frames dishes at one real-world scale (camera at least 0.62 m), so a burger reads smaller than a 40 cm board.
+- The native card colours and fonts are still Kanal's gold/serif in both venues; only the lockup image changes per venue. Bun Kadai as its own branded app (app id, icon, name) isn't done yet.

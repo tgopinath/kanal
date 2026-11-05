@@ -109,6 +109,20 @@ for (const d of dishes) {
   const outer = doc.createNode('kanal-' + d.id);
   scene.removeChild(wrapper); outer.addChild(wrapper); scene.addChild(outer);
   outer.setTranslation([-c[0], -c[1], -c[2]]);
+  // repeat: [[x, z, yawDeg], …] in metres: extra servings of the same scan (e.g. six nuggets from one).
+  if (d.repeat) {
+    const ws = wrapper.getScale(), wr = wrapper.getRotation();
+    for (const [x, z, yaw] of d.repeat) {
+      const h = (yaw || 0) * Math.PI / 360, qy = [0, Math.sin(h), 0, Math.cos(h)];
+      const q = [qy[3] * wr[0] + qy[0] * wr[3] + qy[1] * wr[2] - qy[2] * wr[1], qy[3] * wr[1] - qy[0] * wr[2] + qy[1] * wr[3] + qy[2] * wr[0], qy[3] * wr[2] + qy[0] * wr[1] - qy[1] * wr[0] + qy[2] * wr[3], qy[3] * wr[3] - qy[0] * wr[0] - qy[1] * wr[1] - qy[2] * wr[2]];
+      const g = doc.createNode('serving').setScale(ws).setRotation(q).setTranslation([x + c[0], c[1], z + c[2]]);
+      for (const ch of wrapper.listChildren()) g.addChild(doc.createNode().setMesh(ch.getMesh()).setMatrix(ch.getMatrix()));
+      outer.addChild(g);
+    }
+    b = getBounds(scene);
+    const t = outer.getTranslation();
+    outer.setTranslation([t[0] - (b.min[0] + b.max[0]) / 2, t[1] - b.min[1], t[2] - (b.min[2] + b.max[2]) / 2]);
+  }
   b = getBounds(scene);
 
   // A clean modelled vessel in place of a broken scanned one; the food is lifted onto it.
@@ -241,11 +255,11 @@ async function removeByColour(doc, scene, rules) {
       const px = await pixels(tex);
       const a = idx.getArray(), keep = [], v = [0, 0, 0], t = [0, 0];
       for (let k = 0; k < a.length; k += 3) {
-        let y = 0, u = 0, w = 0;
+        let y = 0, u = 0, w = 0, ymax = -Infinity;
         // Sample the colour at the three corners and the centre; a triangle goes only if all of them match.
         const samples = [];
         for (let j = 0; j < 3; j++) {
-          pos.getElement(a[k + j], v); y += m[1] * v[0] + m[5] * v[1] + m[9] * v[2] + m[13];
+          pos.getElement(a[k + j], v); const wy = m[1] * v[0] + m[5] * v[1] + m[9] * v[2] + m[13]; y += wy; ymax = Math.max(ymax, wy);
           uv.getElement(a[k + j], t); u += t[0]; w += t[1]; samples.push([t[0], t[1]]);
         }
         samples.push([u / 3, w / 3]);
@@ -258,6 +272,7 @@ async function removeByColour(doc, scene, rules) {
           if (r.below != null && f > r.below) return false;
           if (r.above != null && f < r.above) return false;
           if (r.outside != null && rad < r.outside) return false;
+          if (r.reach != null && (ymax - b0.min[1]) / H < r.reach) return false; // any corner reaches this high
           return samples.every(([su, sv]) => {
             const x = Math.min(px.W - 1, Math.max(0, Math.floor((su - Math.floor(su)) * px.W)));
             const yy = Math.min(px.H - 1, Math.max(0, Math.floor((sv - Math.floor(sv)) * px.H)));

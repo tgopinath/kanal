@@ -1,7 +1,7 @@
 <!doctype html><meta charset="utf-8"><title>lockup</title>
 <!-- The KANAL · MENU lockup and the three ring controls, drawn once as a transparent PNG (1024 × 512 = 32 × 16 cm on the table).
      The native AR views lay this image flat on the table plane. Ring centres: x = 0.30 / 0.50 / 0.70, y = 0.70 of the image. -->
-<script type="module">import '@fontsource/lato/700.css'; import '@fontsource/lato/400.css';</script>
+<script type="module">import '@fontsource/lato/700.css'; import '@fontsource/lato/900.css'; import '@fontsource/lato/400.css';</script>
 <style>
 html,body{margin:0;background:transparent}
 #c{position:relative;width:1024px;height:512px;color:#ecd8ae;font-family:Lato}
@@ -24,7 +24,16 @@ html,body{margin:0;background:transparent}
   <div class="ring" style="left:70%"><svg viewBox="0 0 24 24" fill="none" stroke="#f6eddd" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 7l5 5-5 5"/></svg></div>
 </div>
 <script>
-const s=new URLSearchParams(location.search).get('state');
+const q=new URLSearchParams(location.search), s=q.get('state');
+if (q.get('venue')==='bun') {
+  // Bun Kadai: mustard on charcoal, its bun mark and wordmark.
+  document.querySelector('.top .mark').outerHTML='<svg class="mark" viewBox="0 0 64 64" fill="none" stroke="#f2b33d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="32" cy="32" r="29"/><path d="M16 30c0-8.5 7.2-14 16-14s16 5.5 16 14z"/><path d="M15 35.5c3 2 5 2 8 0s5-2 8 0 5 2 8 0 5-2 9 0"/><path d="M17 41h30a2 2 0 0 1-2 6H19a2 2 0 0 1-2-6z"/><path d="M26 22.5l1.5-1M33 21l1.5 1M38.5 24.5l1 1.2"/></svg>';
+  const n=document.querySelector('.name'); n.textContent='BUN KADAI'; n.style.letterSpacing='.24em'; n.style.marginRight='-.24em'; n.style.fontWeight='900';
+  document.querySelector('.rule').style.background='#f2b33d88';
+  document.querySelector('.menu').style.color='#f2b33d';
+  document.querySelectorAll('.ring').forEach(r=>{r.style.borderColor='#f2b33dcc';r.style.background='#0c0c0c40'});
+  document.querySelector('.ring.main').style.borderColor='#f2b33d';
+}
 document.getElementById('mid').innerHTML = s==='play' ? '<path d="M9.5 7.2v9.6l7.4-4.8z"/>' : '<path d="M9.5 7.5v9M14.5 7.5v9"/>';
 document.fonts.ready.then(()=>setTimeout(()=>document.body.dataset.ready='1',300));
 </script>

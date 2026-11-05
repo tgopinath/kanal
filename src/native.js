@@ -16,8 +16,9 @@ export const Native = {
   available: () => platform() !== 'web',
 
   // dishes: [{ id, name, qty, price, model, usdz }] ; index: dish to start with
-  async open(dishes, index) {
-    const payload = { dishes, index };
+  // brand: { lockup: 'ar/lockup' (PNG prefix for the table lockup), wordmark }
+  async open(dishes, index, brand = {}) {
+    const payload = { dishes, index, ...brand };
     if (ios()) {
       return new Promise(res => {
         window.__kanalNative = Object.assign(window.__kanalNative || {}, { closed: i => res({ ok: true, index: i }) });

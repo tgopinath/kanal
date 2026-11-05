@@ -58,7 +58,9 @@ struct WebShell: UIViewRepresentable {
                 }
                 guard !list.isEmpty else { return }
                 let index = min(max(0, (body["index"] as? Int) ?? 0), list.count - 1)
-                parent.onOpenAR(ARRequest(dishes: list, index: index))
+                var request = ARRequest(dishes: list, index: index)
+                if let lockup = body["lockup"] as? String, lockup.hasPrefix("ar/") { request.lockup = lockup }
+                parent.onOpenAR(request)
             default: break
             }
         }

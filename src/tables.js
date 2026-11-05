@@ -9,6 +9,7 @@ import './styles.css';
 import './tables.css';
 import QRCode from 'qrcode';
 import { TABLES, tableUrl } from './orders.js';
+import { RESTAURANT, VENUE_ID, lockupHTML } from './dishes.js';
 import { icon, MARK } from './icons.js';
 
 const root = document.getElementById('qr');
@@ -18,10 +19,10 @@ let base = new URLSearchParams(location.search).get('base') || defaultBase;
 
 async function render() {
   const cards = await Promise.all(TABLES.map(async t => {
-    const url = tableUrl(base, t);
+    const url = tableUrl(base, t, VENUE_ID);
     const svg = await QRCode.toString(url, { type: 'svg', margin: 0, errorCorrectionLevel: 'M', color: { dark: '#1c140a', light: '#0000' } });
     return `<figure class="tent">
-      <span class="lockup">${MARK}<span class="lockup-words"><span class="lockup-name">KANAL</span><span class="lockup-ta" lang="ta">கனல்</span></span></span>
+      ${lockupHTML()}
       <p class="tent-table">Table <strong>${t}</strong></p>
       <div class="tent-qr" role="img" aria-label="QR code for table ${t}">${svg}</div>
       <figcaption>Scan with your camera to see tonight’s dishes on this table and order straight to the kitchen.</figcaption>
@@ -30,7 +31,7 @@ async function render() {
   }));
   root.innerHTML = `
   <header class="qr-top">
-    <div><h1 class="display display-sm">Table codes</h1>
+    <div><h1 class="display display-sm">${RESTAURANT.name} table codes</h1>
     <p class="muted">Each code opens the menu seated at its table, so orders reach the kitchen tagged with where to bring the food.</p></div>
     <form class="qr-base" id="base-form">
       <div class="k-field"><label class="k-label" for="base">Menu address</label><input class="k-input" id="base" type="url" value="${esc(base)}" required></div>
@@ -42,4 +43,5 @@ async function render() {
   root.querySelector('#base-form').addEventListener('submit', e => { e.preventDefault(); base = root.querySelector('#base').value; render(); });
   root.querySelector('#print').addEventListener('click', () => print());
 }
+document.title = `Table codes · ${RESTAURANT.name}`;
 render();

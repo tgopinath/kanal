@@ -16,12 +16,12 @@ export const TABLES = Array.from({ length: 12 }, (_, i) => String(i + 1).padStar
 
 // A short check code per table, printed into its QR, so a typed URL with a random table number is rejected.
 // (A real deployment would issue these from the server and rotate them.)
-export const tableCode = t => {
+export const tableCode = (t, venue = 'kanal') => {
   let h = 2166136261;
-  for (const c of `kanal:${t}:hearth`) { h ^= c.charCodeAt(0); h = Math.imul(h, 16777619) >>> 0; }
+  for (const c of (venue === 'kanal' ? `kanal:${t}:hearth` : `${venue}:${t}:hearth`)) { h ^= c.charCodeAt(0); h = Math.imul(h, 16777619) >>> 0; }
   return h.toString(36).slice(0, 5);
 };
-export const tableUrl = (base, t) => `${base}?table=${t}&k=${tableCode(t)}`;
+export const tableUrl = (base, t, venue = 'kanal') => `${base}?${venue === 'kanal' ? '' : `venue=${venue}&`}table=${t}&k=${tableCode(t, venue)}`;
 
 const read = (k, f) => { try { const v = localStorage.getItem(k); return v == null ? f : JSON.parse(v); } catch { return f; } };
 const write = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); return true; } catch { return false; } };
@@ -35,21 +35,21 @@ export function deviceId() {
 // ---------- table session ----------
 export function readTableFromUrl() {
   const q = new URLSearchParams(location.search);
-  const t = q.get('table'), k = q.get('k');
+  const t = q.get('table'), k = q.get('k'), venue = q.get('venue') || 'kanal';
   if (!t) return null;
   const table = String(Number(t)).padStart(2, '0');
   // Drop the parameters from the address bar so a shared screenshot or link doesn't carry the table.
   history.replaceState(null, '', location.pathname + location.hash);
-  if (!TABLES.includes(table) || k !== tableCode(table)) return { error: 'This code isn’t one of our tables. Please scan the code on your table again.' };
-  write(TABLE_KEY, { table, at: Date.now() });
+  if (!TABLES.includes(table) || k !== tableCode(table, venue)) return { error: 'This code isn’t one of our tables. Please scan the code on your table again.' };
+  write(TABLE_KEY, { table, venue, at: Date.now() });
   return { table };
 }
-export function currentTable() {
+export function currentTable(venue) {
   const s = read(TABLE_KEY, null);
-  if (!s || Date.now() - s.at > VISIT_MS) return null;
+  if (!s || Date.now() - s.at > VISIT_MS || (s.venue || 'kanal') !== venue) return null;
   return s.table;
 }
-export function setTable(table) { write(TABLE_KEY, { table, at: Date.now() }); }
+export function setTable(table, venue) { write(TABLE_KEY, { table, venue, at: Date.now() }); }
 export function leaveTable() { try { localStorage.removeItem(TABLE_KEY); } catch {} }
 
 // ---------- channel ----------
@@ -75,12 +75,12 @@ function save(all) {
 }
 export function subscribe(fn) { listeners.add(fn); return () => listeners.delete(fn); }
 
-export function placeOrder({ table, items, note }) {
+export function placeOrder({ venue, table, items, note }) {
   const all = list();
-  const round = all.filter(o => o.table === table && o.kind === 'food' && o.device === deviceId()).length + 1;
+  const round = all.filter(o => (o.venue || 'kanal') === venue && o.table === table && o.kind === 'food' && o.device === deviceId()).length + 1;
   const order = {
     id: 'o' + Date.now().toString(36) + Math.random().toString(36).slice(2, 5),
-    kind: 'food', table, round, device: deviceId(),
+    kind: 'food', venue, table, round, device: deviceId(),
     items, note: (note || '').trim().slice(0, 280),
     total: items.reduce((s, i) => s + i.price * i.qty, 0),
     status: 'received', placedAt: Date.now(), updatedAt: Date.now(),
@@ -88,14 +88,14 @@ export function placeOrder({ table, items, note }) {
   save([...all, order]);
   return order;
 }
-export function requestBill(table) {
+export function requestBill(venue, table) {
   const all = list();
-  if (all.some(o => o.kind === 'bill' && o.table === table && o.status !== 'served')) return false;
-  save([...all, { id: 'b' + Date.now().toString(36), kind: 'bill', table, device: deviceId(), status: 'received', placedAt: Date.now(), updatedAt: Date.now() }]);
+  if (all.some(o => o.kind === 'bill' && (o.venue || 'kanal') === venue && o.table === table && o.status !== 'served')) return false;
+  save([...all, { id: 'b' + Date.now().toString(36), kind: 'bill', venue, table, device: deviceId(), status: 'received', placedAt: Date.now(), updatedAt: Date.now() }]);
   return true;
 }
 export function setStatus(id, status) {
   save(list().map(o => (o.id === id ? { ...o, status, updatedAt: Date.now() } : o)));
 }
 export function nextStatus(s) { const i = STATUS.findIndex(x => x.id === s); return STATUS[Math.min(STATUS.length - 1, i + 1)].id; }
-export const mine = (table) => list().filter(o => o.table === table && o.device === deviceId());
+export const mine = (venue, table) => list().filter(o => (o.venue || 'kanal') === venue && o.table === table && o.device === deviceId());

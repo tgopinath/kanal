@@ -37,8 +37,8 @@ final class ARTableViewController: UIViewController {
     private var loading: AnyCancellable?
     private var updates: Cancellable?
     private var timer: Timer?
-    private let lockTexPause = ARTableViewController.texture("ar/lockup-pause.png")
-    private let lockTexPlay = ARTableViewController.texture("ar/lockup-play.png")
+    private lazy var lockTexPause = ARTableViewController.texture("\(request.lockup)-pause.png")
+    private lazy var lockTexPlay = ARTableViewController.texture("\(request.lockup)-play.png")
 
     // Overlay (UIKit, screen space)
     private let card = UIVisualEffectView(effect: UIBlurEffect(style: .systemUltraThinMaterialDark))

@@ -25,7 +25,7 @@ export function mountTable(root, o) {
       ${o.onAdd ? `<button class="ts-add" type="button" id="ts-add">${icon('plus')}<span>Add to order</span></button>` : ''}
     </div>
     <model-viewer class="ts-mv" id="ts-mv" camera-controls disable-pan disable-zoom interaction-prompt="none"
-      camera-orbit="0deg 60deg auto" min-camera-orbit="auto 45deg auto" max-camera-orbit="auto 72deg auto" field-of-view="26deg"
+      camera-orbit="0deg 60deg auto" min-camera-orbit="auto 45deg auto" max-camera-orbit="auto 72deg 4m" field-of-view="26deg"
       environment-image="${asset('env/hearth.hdr')}" tone-mapping="neutral" exposure="0.95" shadow-intensity="1" shadow-softness="0.4"
       ar ar-modes="webxr scene-viewer quick-look" ar-placement="floor" ar-scale="fixed" touch-action="pan-y">
       <button class="ts-pin" slot="hotspot-pin" data-position="0 0.05m 0" data-normal="0 1 0" tabindex="-1" aria-hidden="true"><span></span></button>
@@ -55,7 +55,7 @@ export function mountTable(root, o) {
     o.onIndex?.(i);
     $('#ts-close').href = `#/dish/${d.id}`;
     $('#ts-num').textContent = `${i + 1} / ${dishes.length}`;
-    $('#ts-course').textContent = { starter: 'Starter', main: 'Main', dessert: 'Dessert', drink: 'Drink' }[d.course];
+    $('#ts-course').textContent = o.courseLabel ? o.courseLabel(d.course) : d.course;
     $('#ts-live').textContent = `${d.name}, ${formatQty(d)}, ${formatPrice(d.price)}`;
     const apply = () => {
       $('#ts-name').textContent = d.name;
@@ -71,7 +71,9 @@ export function mountTable(root, o) {
   mv.addEventListener('load', () => {
     const dim = mv.getDimensions();
     mv.updateHotspot({ name: 'hotspot-pin', position: `0m ${(dim.y * 0.78).toFixed(3)}m 0m` });
-    mv.cameraOrbit = '0deg 60deg auto'; mv.jumpCameraToGoal();
+    // Keep the table at one real-world scale: small plates (a burger, a tart) stay small instead of being zoomed to fill.
+    const fit = Math.hypot(dim.x, dim.y, dim.z) / 2 / Math.sin(13 * Math.PI / 180);
+    mv.cameraOrbit = `0deg 60deg ${Math.max(fit, 0.62).toFixed(3)}m`; mv.jumpCameraToGoal();
     requestAnimationFrame(() => root.classList.remove('is-swapping'));
     if (!o.native && mv.canActivateAR) $('#ts-ar').hidden = false;
   });

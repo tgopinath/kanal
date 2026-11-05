@@ -35,6 +35,8 @@ struct ARRequest: Identifiable {
     let id = UUID()
     let dishes: [Dish]
     let index: Int
+    /// Prefix of the venue's table-lockup PNGs, e.g. "ar/lockup" (Kanal) or "ar/bun-lockup" (Bun Kadai).
+    var lockup = "ar/lockup"
 }
 
 enum Brand {

@@ -34,6 +34,7 @@ class TableARPlugin : Plugin() {
         val intent = Intent(context, TableArActivity::class.java)
             .putExtra(TableArActivity.EXTRA_DISHES, dishes)
             .putExtra(TableArActivity.EXTRA_INDEX, call.getInt("index", 0) ?: 0)
+            .putExtra(TableArActivity.EXTRA_LOCKUP, call.getString("lockup")?.takeIf { it.startsWith("ar/") } ?: "ar/lockup")
         startActivityForResult(call, intent, "arClosed")
     }
 

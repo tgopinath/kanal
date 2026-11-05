@@ -55,6 +55,7 @@ class TableArActivity : AppCompatActivity() {
     companion object {
         const val EXTRA_DISHES = "dishes"
         const val EXTRA_INDEX = "index"
+        const val EXTRA_LOCKUP = "lockup"
         const val EXTRA_ERROR = "error"
         private const val TAG = "KanalAR"
         private const val ADVANCE_MS = 8000L
@@ -89,8 +90,9 @@ class TableArActivity : AppCompatActivity() {
 
     private val handler = Handler(Looper.getMainLooper())
     private val advance = Runnable { step(1) }
-    private val lockPause by lazy { BitmapFactory.decodeStream(assets.open("public/ar/lockup-pause.png")) }
-    private val lockPlay by lazy { BitmapFactory.decodeStream(assets.open("public/ar/lockup-play.png")) }
+    private val lockupPrefix by lazy { intent.getStringExtra(EXTRA_LOCKUP) ?: "ar/lockup" }
+    private val lockPause by lazy { BitmapFactory.decodeStream(assets.open("public/$lockupPrefix-pause.png")) }
+    private val lockPlay by lazy { BitmapFactory.decodeStream(assets.open("public/$lockupPrefix-play.png")) }
 
     private val view = FloatArray(16)
     private val proj = FloatArray(16)
