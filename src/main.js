@@ -14,6 +14,7 @@ import { RESTAURANT, COURSES, DISHES, ENV_CREDITS, byId, inCourse, formatPrice, 
 import { icon, MARK } from './icons.js';
 import { Native, platform } from './native.js';
 import { mountTable } from './table.js';
+import * as Orders from './orders.js';
 
 const app = document.getElementById('app');
 const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -35,6 +36,12 @@ function setQty(id, q) {
   document.querySelectorAll('[data-count]').forEach(el => { const n = shortCount(); el.textContent = n; el.hidden = !n; });
 }
 
+// The table comes from the QR code on it (see orders.js).
+const scan = Orders.readTableFromUrl();
+let table = Orders.currentTable();
+let orderNote = '';
+const tableLabel = () => (table ? `Table ${table}` : 'No table yet');
+
 const theme = store.get('theme', 'system');
 if (theme !== 'system') document.documentElement.dataset.theme = theme;
 
@@ -54,7 +61,7 @@ function nav(active) {
   const items = [
     ['menu', '#/', 'menu', 'Menu'],
     ['table', `#/table/${current.tableId || 'prime-rib'}`, 'table', 'On the table'],
-    ['shortlist', '#/shortlist', 'bookmark', 'Shortlist'],
+    ['shortlist', '#/order', 'bag', 'Order'],
     ['about', '#/about', 'info', 'About'],
   ];
   return `<nav class="k-bottomnav appnav" aria-label="Main">${items.map(([k, href, ic, label]) => `
@@ -75,7 +82,7 @@ function dishRow(d) {
       </span>
     </a>
     <a class="row-ar k-iconbtn" href="#/table/${d.id}" aria-label="See ${esc(d.name)} on your table">${icon('ar')}</a>
-    ${n ? `<span class="row-in" aria-label="${n} in shortlist">${n}</span>` : ''}
+    ${n ? `<span class="row-in" aria-label="${n} in your order">${n}</span>` : ''}
   </li>`;
 }
 
@@ -86,7 +93,7 @@ function viewMenu() {
   const hero = DISHES.find(d => d.hero);
   app.innerHTML = `
   <header class="masthead">
-    <div class="masthead-row">${lockup()}<span class="table-chip">Table ${RESTAURANT.table} · ${RESTAURANT.service}</span></div>
+    <div class="masthead-row">${lockup()}${table ? `<span class="table-chip">Table ${table} · ${RESTAURANT.service}</span>` : `<a class="table-chip table-chip-cta" href="#/order">${icon('qr')}Find your table</a>`}</div>
   </header>
   <main id="main" class="menu" tabindex="-1">
     <section class="hero" aria-labelledby="hero-title">
@@ -114,7 +121,7 @@ function viewMenu() {
       <ul class="dish-list" role="list">${inCourse(c.id).map(dishRow).join('')}</ul>
     </section>`).join('')}
 
-    <p class="fineprint">Every dish here is a real 3D scan or model, shown at its actual size on your table. Prices include taxes. Tell your server about allergies.</p>
+    <p class="fineprint">Every dish here is a real 3D scan or model, shown at its actual size on your table. Prices include taxes. Add allergies to the note when you send your order.</p>
   </main>
   ${nav('menu')}`;
 
@@ -176,9 +183,9 @@ function viewDish(id) {
       </dl>
       <div class="dish-actions">
         <a class="k-btn k-btn-primary k-btn-lg" href="#/table/${d.id}" id="on-table">${icon('ar')}View on your table</a>
-        <div class="stepper" role="group" aria-label="Shortlist quantity">
-          ${n ? `<button class="k-iconbtn" type="button" data-q="-1" aria-label="One fewer">${icon('minus')}</button><span class="stepper-n" aria-live="polite">${n} in shortlist</span><button class="k-iconbtn" type="button" data-q="1" aria-label="One more">${icon('plus')}</button>`
-              : `<button class="k-btn k-btn-outline k-btn-block" type="button" data-q="1">${icon('bookmark')}Add to shortlist</button>`}
+        <div class="stepper" role="group" aria-label="Quantity in your order">
+          ${n ? `<button class="k-iconbtn" type="button" data-q="-1" aria-label="One fewer">${icon('minus')}</button><span class="stepper-n" aria-live="polite">${n} in your order</span><button class="k-iconbtn" type="button" data-q="1" aria-label="One more">${icon('plus')}</button>`
+              : `<button class="k-btn k-btn-outline k-btn-block" type="button" data-q="1">${icon('plus')}Add to order</button>`}
         </div>
       </div>
       <p class="credit">${esc(d.credit.kind)}: “${esc(d.credit.title)}” by ${esc(d.credit.author)} · <a href="${d.credit.url}" target="_blank" rel="noopener">source</a> · <a href="${d.credit.license.url}" target="_blank" rel="noopener">${d.credit.license.name}</a>${d.standIn ? `<br><span class="standin">${esc(d.standIn)}</span>` : ''}</p>
@@ -192,7 +199,7 @@ function viewDish(id) {
   mv.addEventListener('progress', e => { app.querySelector('.mv-progress span').style.transform = `scaleX(${e.detail.totalProgress})`; if (e.detail.totalProgress === 1) app.querySelector('.mv-progress').classList.add('done'); });
   app.querySelectorAll('[data-q]').forEach(b => b.addEventListener('click', () => {
     setQty(d.id, (shortlist[d.id] || 0) + Number(b.dataset.q));
-    toast(Number(b.dataset.q) > 0 ? `${d.name} added to your shortlist` : `${d.name} updated`);
+    toast(Number(b.dataset.q) > 0 ? `${d.name} added to your order` : `${d.name} updated`);
     rerender();
   }));
   const keys = e => {
@@ -216,6 +223,7 @@ function viewTable(id) {
   return mountTable(app.querySelector('#scene'), {
     dishes: DISHES, start: DISHES.indexOf(d), native, platform: platform(),
     lockupHTML: lockup(), icon, esc, formatPrice, formatQty, model, usdz, poster, asset,
+    onAdd: x => { setQty(x.id, (shortlist[x.id] || 0) + 1); toast(`${x.name} added to your order`); },
     onIndex: i => { current.tableId = DISHES[i].id; history.replaceState(null, '', `#/table/${DISHES[i].id}`); },
     openNative: async i => {
       const payload = DISHES.map(x => ({ id: x.id, name: x.name, qty: formatQty(x), price: formatPrice(x.price), model: `models/${x.id}.glb`, usdz: `models/${x.id}.usdz` }));
@@ -228,46 +236,114 @@ function viewTable(id) {
   });
 }
 
-function viewShortlist() {
+const clock = t => new Date(t).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
+
+function statusTrack(o) {
+  const at = Orders.STATUS.findIndex(x => x.id === o.status);
+  return `<ol class="track" aria-label="Order status: ${Orders.STATUS[at].label}">${Orders.STATUS.map((st, i) => `
+    <li class="track-step ${i < at ? 'is-done' : ''} ${i === at ? 'is-now' : ''}" ${i === at ? 'aria-current="step"' : ''}><span class="track-dot" aria-hidden="true"></span><span class="track-label">${st.label}</span></li>`).join('')}</ol>`;
+}
+
+function seatPicker() {
+  return `<section class="seat k-card" aria-labelledby="seat-title">
+    <div class="seat-qr" aria-hidden="true">${icon('qr')}</div>
+    <h2 id="seat-title" class="display display-sm">Which table are you at?</h2>
+    <p>Point your phone’s camera at the code on your table stand. It tells the kitchen where to bring your food, so you can order straight from here.</p>
+    <form class="seat-form" id="seat">
+      <div class="k-field"><label class="k-label" for="seat-n">Can’t scan? Enter the number on the stand</label>
+        <select class="k-select" id="seat-n" required><option value="">Choose a table</option>${Orders.TABLES.map(t => `<option value="${t}">Table ${t}</option>`).join('')}</select></div>
+      <button class="k-btn k-btn-primary" type="submit">Seat me</button>
+    </form>
+  </section>`;
+}
+
+function viewOrder() {
   const items = Object.entries(shortlist).map(([id, q]) => [byId(id), q]).filter(([d]) => d);
   const total = items.reduce((s, [d, q]) => s + d.price * q, 0);
+  const sent = table ? Orders.mine(table) : [];
+  const rounds = sent.filter(o => o.kind === 'food').sort((a, b) => b.placedAt - a.placedAt);
+  const bill = sent.find(o => o.kind === 'bill' && o.status !== 'served');
+  const billTotal = rounds.reduce((s, o) => s + o.total, 0);
   app.innerHTML = `
-  <header class="topbar"><span class="topbar-title topbar-title-lg">Your shortlist</span>${lockup(true)}</header>
+  <header class="topbar"><span class="topbar-title topbar-title-lg">Your order</span>${table ? `<span class="table-chip">Table ${table}</span>` : lockup(true)}</header>
   <main id="main" class="shortlist" tabindex="-1">
+    ${!table ? seatPicker() : ''}
     ${items.length ? `
-    <p class="lede">Dishes you’d like to order. Show this screen to your server when they come to Table ${RESTAURANT.table}.</p>
-    <ul class="k-list sl-list" role="list">${items.map(([d, q]) => `
-      <li class="k-list-item sl-item">
-        <img class="sl-thumb" src="${poster(d)}" alt="" width="64" height="64">
-        <span class="k-list-text"><a class="sl-name" href="#/dish/${d.id}">${esc(d.name)}</a><span class="sl-sub">${formatQty(d)} · ${formatPrice(d.price)} each</span></span>
-        <span class="stepper stepper-sm" role="group" aria-label="${esc(d.name)} quantity">
-          <button class="k-iconbtn" type="button" data-id="${d.id}" data-q="-1" aria-label="One fewer ${esc(d.name)}">${icon('minus')}</button>
-          <span class="stepper-n">${q}</span>
-          <button class="k-iconbtn" type="button" data-id="${d.id}" data-q="1" aria-label="One more ${esc(d.name)}">${icon('plus')}</button>
-        </span>
-      </li>`).join('')}
-    </ul>
-    <div class="sl-total"><span>Estimated total</span><span class="sl-sum">${formatPrice(total)}</span></div>
-    <button class="k-btn k-btn-primary k-btn-lg k-btn-block" type="button" id="show">Show to my server</button>
-    <button class="k-btn k-btn-ghost k-btn-block" type="button" id="clear">Clear the shortlist</button>`
-    : `<div class="empty">
+    <section aria-labelledby="cart-title">
+      <h2 id="cart-title" class="section-title">Not sent yet</h2>
+      <ul class="k-list sl-list" role="list">${items.map(([d, q]) => `
+        <li class="k-list-item sl-item">
+          <img class="sl-thumb" src="${poster(d)}" alt="" width="64" height="64">
+          <span class="k-list-text"><a class="sl-name" href="#/dish/${d.id}">${esc(d.name)}</a><span class="sl-sub">${formatQty(d)} · ${formatPrice(d.price)} each</span></span>
+          <span class="stepper stepper-sm" role="group" aria-label="${esc(d.name)} quantity">
+            <button class="k-iconbtn" type="button" data-id="${d.id}" data-q="-1" aria-label="One fewer ${esc(d.name)}">${icon('minus')}</button>
+            <span class="stepper-n">${q}</span>
+            <button class="k-iconbtn" type="button" data-id="${d.id}" data-q="1" aria-label="One more ${esc(d.name)}">${icon('plus')}</button>
+          </span>
+        </li>`).join('')}
+      </ul>
+      <div class="k-field order-note"><label class="k-label" for="note">Note for the kitchen <span class="muted">(optional)</span></label>
+        <textarea class="k-input" id="note" maxlength="280" rows="2" placeholder="Allergies, no chilli, bring the dessert later…">${esc(orderNote)}</textarea></div>
+      <div class="sl-total"><span>This round</span><span class="sl-sum">${formatPrice(total)}</span></div>
+      <button class="k-btn k-btn-primary k-btn-lg k-btn-block" type="button" id="send" ${table ? '' : 'disabled aria-describedby="seat-title"'}>${icon('send')}Send to the kitchen</button>
+      ${table ? '' : '<p class="help-line">Choose your table first so the kitchen knows where to bring it.</p>'}
+      <button class="k-btn k-btn-ghost k-btn-block" type="button" id="clear">Clear these dishes</button>
+    </section>` : ''}
+
+    ${rounds.length ? `
+    <section aria-labelledby="sent-title" class="sent">
+      <h2 id="sent-title" class="section-title">Sent to the kitchen</h2>
+      <div aria-live="polite">${rounds.map(o => `
+        <article class="round k-card" aria-label="Round ${o.round}">
+          <header class="round-head"><span class="round-n">Round ${o.round}</span><span class="round-time">${icon('clock')}${clock(o.placedAt)}</span></header>
+          <p class="round-status">${esc(Orders.STATUS.find(x => x.id === o.status).guest)}</p>
+          ${statusTrack(o)}
+          <ul class="round-items" role="list">${o.items.map(i => `<li><span class="server-q">${i.qty} ×</span> ${esc(i.name)}</li>`).join('')}</ul>
+          ${o.note ? `<p class="round-note">“${esc(o.note)}”</p>` : ''}
+        </article>`).join('')}</div>
+      <div class="sl-total bill-total"><span>Your bill so far</span><span class="sl-sum">${formatPrice(billTotal)}</span></div>
+      ${bill ? `<p class="k-alert bill-asked" role="status">${icon('receipt')}<span>Bill requested at ${clock(bill.placedAt)}. It’s on its way to Table ${table}.</span></p>`
+             : `<button class="k-btn k-btn-outline k-btn-block" type="button" id="bill">${icon('receipt')}Ask for the bill</button>`}
+    </section>` : ''}
+
+    ${!items.length && !rounds.length ? `<div class="empty">
         <div class="empty-mark">${MARK}</div>
-        <h1 class="display display-sm">Nothing here yet</h1>
-        <p>Add dishes from the menu while you decide. They stay on this phone, nobody else sees them, and nothing is ordered until you tell your server.</p>
+        <h1 class="display display-sm">Nothing ordered yet</h1>
+        <p>Add dishes from the menu, then send them straight to the kitchen. Your food is brought to ${table ? `Table ${table}` : 'your table'}; you can keep adding rounds all evening.</p>
         <a class="k-btn k-btn-primary" href="#/">Browse the menu</a>
-      </div>`}
+      </div>` : ''}
+    ${table ? `<p class="fineprint">Seated at Table ${table}. Wrong table? <button class="linkbtn" type="button" id="leave">Change table</button></p>` : ''}
   </main>
-  <dialog class="k-dialog server" id="server" aria-labelledby="server-title">
-    <h2 class="k-dialog-title" id="server-title">Table ${RESTAURANT.table}</h2>
+  <dialog class="k-dialog server" id="confirm" aria-labelledby="confirm-title">
+    <h2 class="k-dialog-title" id="confirm-title">Send to the kitchen?</h2>
     <ul class="server-list">${items.map(([d, q]) => `<li><span class="server-q">${q} ×</span> ${esc(d.name)}</li>`).join('')}</ul>
-    <div class="k-dialog-actions"><button class="k-btn k-btn-primary" type="button" value="close" id="server-close">Done</button></div>
+    <p class="k-dialog-body">The kitchen starts cooking as soon as you send, and your food is brought to <strong>Table ${table}</strong>. ${formatPrice(total)}, paid with your bill at the end.</p>
+    <div class="k-dialog-actions"><button class="k-btn k-btn-ghost" type="button" id="confirm-no">Not yet</button><button class="k-btn k-btn-primary" type="button" id="confirm-yes">${icon('send')}Send order</button></div>
   </dialog>
   ${nav('shortlist')}`;
+
   app.querySelectorAll('[data-q]').forEach(b => b.addEventListener('click', () => { setQty(b.dataset.id, (shortlist[b.dataset.id] || 0) + Number(b.dataset.q)); rerender(); }));
-  app.querySelector('#clear')?.addEventListener('click', () => { shortlist = {}; store.set('shortlist', shortlist); rerender(); toast('Shortlist cleared'); });
-  const dlg = app.querySelector('#server');
-  app.querySelector('#show')?.addEventListener('click', () => dlg.showModal());
-  app.querySelector('#server-close')?.addEventListener('click', () => dlg.close());
+  app.querySelector('#note')?.addEventListener('input', e => { orderNote = e.target.value; });
+  app.querySelector('#clear')?.addEventListener('click', () => { shortlist = {}; store.set('shortlist', shortlist); setQty('', 0); rerender(); toast('Dishes cleared'); });
+  app.querySelector('#seat')?.addEventListener('submit', e => {
+    e.preventDefault();
+    const v = app.querySelector('#seat-n').value; if (!v) return;
+    Orders.setTable(v); table = v; rerender(); toast(`Seated at Table ${v}`);
+  });
+  app.querySelector('#leave')?.addEventListener('click', () => { Orders.leaveTable(); table = null; rerender(); });
+  const dlg = app.querySelector('#confirm');
+  app.querySelector('#send')?.addEventListener('click', () => dlg.showModal());
+  app.querySelector('#confirm-no')?.addEventListener('click', () => dlg.close());
+  app.querySelector('#confirm-yes')?.addEventListener('click', () => {
+    const o = Orders.placeOrder({ table, note: orderNote, items: items.map(([d, q]) => ({ id: d.id, name: d.name, qty: q, price: d.price })) });
+    dlg.close();
+    shortlist = {}; store.set('shortlist', shortlist); setQty('', 0); orderNote = '';
+    seen.set(o.id, o.status);
+    rerender(); scrollTo(0, 0);
+    toast(`Round ${o.round} sent. The kitchen has it.`);
+  });
+  app.querySelector('#bill')?.addEventListener('click', () => { Orders.requestBill(table); rerender(); toast('Bill requested'); });
+  return Orders.subscribe(() => { if (document.activeElement?.id !== 'note') rerender(); });
 }
 
 function viewAbout() {
@@ -311,6 +387,15 @@ function viewAbout() {
       </ul>
       <p class="muted">Design and code by Gopinath Thandapani, on the Kolam design system.</p>
     </section>
+
+    <section aria-labelledby="staff-title">
+      <h2 id="staff-title" class="section-title">For the restaurant</h2>
+      <p class="muted">Orders go straight from each table to the kitchen screen, which marks them cooking, on their way and served. Each table has its own QR code.</p>
+      <div class="staff-links">
+        <a class="k-btn k-btn-outline" href="./kitchen.html">${icon('flame')}Kitchen screen</a>
+        <a class="k-btn k-btn-outline" href="./tables.html">${icon('qr')}Table QR codes</a>
+      </div>
+    </section>
   </main>
   ${nav('about')}`;
   app.querySelectorAll('[data-theme-set]').forEach(b => b.addEventListener('click', () => {
@@ -328,10 +413,10 @@ function viewMissing() {
 function route() {
   current.cleanup?.(); current.cleanup = null;
   const [, view, id] = (location.hash.slice(1) || '/').split('/');
-  const r = view === 'dish' ? viewDish(id) : view === 'table' ? viewTable(id) : view === 'shortlist' ? viewShortlist() : view === 'about' ? viewAbout() : viewMenu();
+  const r = view === 'dish' ? viewDish(id) : view === 'table' ? viewTable(id) : view === 'order' || view === 'shortlist' ? viewOrder() : view === 'about' ? viewAbout() : viewMenu();
   current.cleanup = typeof r === 'function' ? r : null;
   document.body.dataset.view = view || 'menu';
-  const t = { dish: byId(id)?.name, table: 'On the table', shortlist: 'Shortlist', about: 'About' }[view];
+  const t = { dish: byId(id)?.name, table: 'On the table', order: 'Your order', about: 'About' }[view];
   document.title = t ? `${t} · Kanal` : 'Kanal — Table Menu';
 }
 let lastHash = location.hash;
@@ -344,7 +429,23 @@ addEventListener('hashchange', () => {
   route();
   if (!location.hash.startsWith('#c-')) { scrollTo(0, 0); document.getElementById('main')?.focus({ preventScroll: true }); }
 });
+// Tell the guest when the kitchen moves one of their rounds along, wherever they are in the menu.
+const seen = new Map();
+if (table) Orders.mine(table).forEach(o => seen.set(o.id, o.status));
+Orders.subscribe(() => {
+  if (!table) return;
+  for (const o of Orders.mine(table)) {
+    const was = seen.get(o.id); seen.set(o.id, o.status);
+    if (!was || was === o.status) continue;
+    if (o.kind === 'bill' && o.status === 'served') toast('Your bill is on its way');
+    else if (o.kind === 'food' && o.status !== 'received') toast(`Round ${o.round}: ${Orders.STATUS.find(x => x.id === o.status).guest.toLowerCase()}`);
+  }
+});
+
+if (location.hash === '' && scan?.table) location.hash = '#/';
 route();
+if (scan?.error) toast(scan.error);
+else if (scan?.table) toast(`Welcome to Kanal. You’re at Table ${scan.table}.`);
 
 if ('serviceWorker' in navigator && location.protocol === 'https:' && platform() === 'web') {
   navigator.serviceWorker.register('./sw.js').catch(() => {});

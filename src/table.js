@@ -22,6 +22,7 @@ export function mountTable(root, o) {
       <p class="ts-name" id="ts-name"></p>
       <span class="ts-rule" aria-hidden="true"></span>
       <p class="ts-meta" id="ts-meta"></p>
+      ${o.onAdd ? `<button class="ts-add" type="button" id="ts-add">${icon('plus')}<span>Add to order</span></button>` : ''}
     </div>
     <model-viewer class="ts-mv" id="ts-mv" camera-controls disable-pan disable-zoom interaction-prompt="none"
       camera-orbit="0deg 60deg auto" min-camera-orbit="auto 45deg auto" max-camera-orbit="auto 72deg auto" field-of-view="26deg"
@@ -112,6 +113,7 @@ export function mountTable(root, o) {
   $('#ts-prev').addEventListener('click', () => step(-1));
   $('#ts-next').addEventListener('click', () => step(1));
   $('#ts-pause').addEventListener('click', () => setPaused(!paused));
+  $('#ts-add')?.addEventListener('click', () => { o.onAdd(dishes[i]); setPaused?.(true); });
   $('#ts-ar').addEventListener('click', () => {
     setPaused(true);
     if (!o.native) return mv.activateAR();
