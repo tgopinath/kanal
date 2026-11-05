@@ -378,7 +378,7 @@ function viewAbout() {
 
     <section aria-labelledby="cred-title">
       <h2 id="cred-title" class="section-title">Credits</h2>
-      <p class="muted">The dishes are real 3D scans and models shared under open licences. They were cleaned, resized to real-world scale and lightened for phones; nothing else was changed.</p>
+      <p class="muted">The dishes are real 3D scans and models shared under open licences. They were cleaned of scan ground, resized to real-world scale, lit for the table and lightened for phones. The plates under the apple galette, bistecca and lettuce cup and the slate under the sashimi are modelled for this menu.</p>
       <ul class="credits" role="list">
         ${DISHES.map(d => `<li><span class="cr-what">${esc(d.name)}</span><span class="cr-src">${esc(d.credit.kind)}, “${esc(d.credit.title)}” by ${esc(d.credit.author)}. <a href="${d.credit.url}" target="_blank" rel="noopener">Source${icon('external', 'ext')}</a> · <a href="${d.credit.license.url}" target="_blank" rel="noopener">${d.credit.license.name}</a>${d.standIn ? ` <em>${esc(d.standIn)}</em>` : ''}</span></li>`).join('')}
         ${ENV_CREDITS.map(c => `<li><span class="cr-what">${esc(c.what)}</span><span class="cr-src">“${esc(c.title)}” by ${esc(c.author)}. <a href="${c.url}" target="_blank" rel="noopener">Source${icon('external', 'ext')}</a> · <a href="${c.license.url}" target="_blank" rel="noopener">${c.license.name}</a></span></li>`).join('')}

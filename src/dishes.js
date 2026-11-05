@@ -140,7 +140,7 @@ export const DISHES = [
 
 export const ENV_CREDITS = [
   { what: 'Walnut table surface', title: 'Black Walnut Veneer 02', author: 'Poly Haven', url: 'https://polyhaven.com/a/black_walnut_veneer_02', license: CC0 },
-  { what: 'Studio lighting for the 3D viewer', title: 'Brown Photostudio 02', author: 'Poly Haven', url: 'https://polyhaven.com/a/brown_photostudio_02', license: CC0 },
+  { what: 'Board under the flatbread', title: 'Wooden Cutting Board', author: 'Poly Haven', url: 'https://polyhaven.com/a/wooden_cutting_board', license: CC0 },
 ];
 
 export const byId = id => DISHES.find(d => d.id === id);
