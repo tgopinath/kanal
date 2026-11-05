@@ -1,0 +1,11 @@
+<!doctype html><meta charset="utf-8"><title>inspect</title>
+<style>html,body{margin:0;background:#c0f}.g{display:grid;grid-template-columns:repeat(3,400px)}model-viewer{width:400px;height:400px;background:#c0f}</style>
+<div class="g" id="g"></div>
+<script type="module">
+import '@google/model-viewer';
+const q=new URLSearchParams(location.search), src=q.get('src');
+const orbits=(q.get('orbits')||'0deg 75deg auto,120deg 95deg auto,240deg 120deg auto').split(',');
+let n=0;
+for (const o of orbits){const mv=document.createElement('model-viewer');mv.setAttribute('camera-orbit',o);mv.setAttribute('environment-image','neutral');mv.setAttribute('interaction-prompt','none');mv.src=src;
+mv.addEventListener('load',()=>{if(++n===orbits.length)setTimeout(()=>document.body.dataset.ready='1',800)});document.getElementById('g').append(mv);}
+</script>

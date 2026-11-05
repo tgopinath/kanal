@@ -2,7 +2,7 @@
  {
   "id": "lettuce-cup",
   "src": "objaverse/2df67b7644d742d2b0c198bedfd7c3f2.glb",
-  "size": 0.24,
+  "size": 0.15,
   "maxTris": 60000,
   "look": {
    "rough": [
@@ -13,14 +13,38 @@
    "coat": 0.25,
    "coatRough": 0.3,
    "sat": 1.06
+  },
+  "remove": [
+   {
+    "below": 0.6,
+    "lum": [
+     0,
+     0.16
+    ]
+   },
+   {
+    "below": 0.45,
+    "outside": 0.5
+   }
+  ],
+  "islands": 0.02,
+  "vessel": {
+   "kind": "plate",
+   "color": [
+    0.03,
+    0.029,
+    0.027
+   ],
+   "rough": 0.45,
+   "clearcoat": 0.3,
+   "pad": 1.4
   }
  },
  {
   "id": "sashimi",
   "src": "objaverse/419d358d21a24b2cb0ef4d50b849e268.glb",
-  "size": 0.32,
+  "size": 0.29,
   "maxTris": 56000,
-  "trimBelow": 0.06,
   "look": {
    "rough": [
     0.28,
@@ -30,14 +54,24 @@
    "coat": 0.7,
    "coatRough": 0.12,
    "sat": 1.05
-  }
+  },
+  "vessel": {
+   "kind": "slate",
+   "color": [
+    0.045,
+    0.045,
+    0.05
+   ],
+   "rough": 0.78,
+   "pad": 1.1
+  },
+  "trimBelow": 0.3
  },
  {
   "id": "flatbread",
   "src": "objaverse/0e6df6c6ca5a4140b5ace6a957046ce9.glb",
-  "size": 0.34,
+  "size": 0.29,
   "maxTris": 60000,
-  "trimBelow": 0.3,
   "look": {
    "rough": [
     0.6,
@@ -45,6 +79,13 @@
    ],
    "normal": 1.4,
    "sat": 1.06
+  },
+  "islands": 0.01,
+  "trimBelow": 0.55,
+  "vessel": {
+   "kind": "board",
+   "src": "polyhaven/wooden_cutting_board/wooden_cutting_board.gltf",
+   "pad": 1.12
   }
  },
  {
@@ -66,7 +107,7 @@
  {
   "id": "bistecca",
   "src": "objaverse/969285ae788c41cd914387cecf088708.glb",
-  "size": 0.32,
+  "size": 0.27,
   "maxTris": 60000,
   "look": {
    "rough": [
@@ -77,6 +118,31 @@
    "coat": 0.35,
    "coatRough": 0.28,
    "sat": 1.08
+  },
+  "remove": [
+   {
+    "below": 0.45,
+    "sat": [
+     0,
+     0.2
+    ],
+    "lum": [
+     0.45,
+     1
+    ]
+   }
+  ],
+  "islands": 0.01,
+  "vessel": {
+   "kind": "plate",
+   "color": [
+    0.8,
+    0.78,
+    0.74
+   ],
+   "rough": 0.22,
+   "clearcoat": 0.6,
+   "pad": 1.15
   }
  },
  {
@@ -94,12 +160,26 @@
    "coatRough": 0.2,
    "sat": 1.06,
    "glow": 0.58
-  }
+  },
+  "remove": [
+   {
+    "below": 0.4,
+    "sat": [
+     0,
+     0.25
+    ],
+    "lum": [
+     0.4,
+     1
+    ]
+   }
+  ],
+  "islands": 0.01
  },
  {
   "id": "apple-pie",
   "src": "objaverse/1e96b1fd3d3c42f3aef4f3cdb6051746.glb",
-  "size": 0.21,
+  "size": 0.17,
   "maxTris": 50000,
   "look": {
    "rough": [
@@ -111,6 +191,31 @@
    "coatRough": 0.2,
    "sat": 1.06,
    "glow": 0.58
+  },
+  "remove": [
+   {
+    "below": 0.5,
+    "sat": [
+     0,
+     0.2
+    ],
+    "lum": [
+     0.4,
+     1
+    ]
+   }
+  ],
+  "islands": 0.01,
+  "vessel": {
+   "kind": "plate",
+   "color": [
+    0.8,
+    0.78,
+    0.74
+   ],
+   "rough": 0.22,
+   "clearcoat": 0.6,
+   "pad": 1.18
   }
  },
  {
