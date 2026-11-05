@@ -25,7 +25,7 @@ export function mountTable(root, o) {
     </div>
     <model-viewer class="ts-mv" id="ts-mv" camera-controls disable-pan disable-zoom interaction-prompt="none"
       camera-orbit="0deg 60deg auto" min-camera-orbit="auto 45deg auto" max-camera-orbit="auto 72deg auto" field-of-view="26deg"
-      environment-image="${asset('env/studio.hdr')}" exposure="1.0" shadow-intensity="1.35" shadow-softness="0.7"
+      environment-image="${asset('env/hearth.hdr')}" tone-mapping="neutral" exposure="0.95" shadow-intensity="1" shadow-softness="0.4"
       ar ar-modes="webxr scene-viewer quick-look" ar-placement="floor" ar-scale="fixed" touch-action="pan-y">
       <button class="ts-pin" slot="hotspot-pin" data-position="0 0.05m 0" data-normal="0 1 0" tabindex="-1" aria-hidden="true"><span></span></button>
       <button slot="ar-button" hidden></button>

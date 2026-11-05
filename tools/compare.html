@@ -1,0 +1,19 @@
+<!doctype html><meta charset="utf-8"><title>compare</title>
+<style>html,body{margin:0;background:#120e0a}.row{display:flex}figure{margin:0;position:relative;width:520px;height:520px;background:url(/env/walnut.jpg) center/cover}
+figure::before{content:"";position:absolute;inset:0;background:radial-gradient(80% 70% at 50% 55%,transparent 30%,#0b0704d0 100%)}
+model-viewer{position:absolute;inset:0;width:100%;height:100%;background:transparent;--poster-color:transparent}
+figcaption{position:absolute;left:8px;top:6px;color:#fff;font:14px sans-serif;z-index:2}</style>
+<div class="row">
+<figure><figcaption>before</figcaption><model-viewer id="a" interaction-prompt="none" camera-orbit="30deg 62deg auto" field-of-view="24deg"
+  environment-image="/env/studio.hdr" exposure="1.05" shadow-intensity="1.1" shadow-softness="0.9"></model-viewer></figure>
+<figure><figcaption>after</figcaption><model-viewer id="b" interaction-prompt="none" camera-orbit="30deg 62deg auto" field-of-view="24deg"
+  environment-image="/env/hearth.hdr" tone-mapping="agx" exposure="1.0" shadow-intensity="1" shadow-softness="0.35"></model-viewer></figure>
+</div>
+<script type="module">
+import '@google/model-viewer';
+const q=new URLSearchParams(location.search), id=q.get('id');
+for (const [k,v] of q) if (k.startsWith('b.')) document.getElementById('b').setAttribute(k.slice(2), v);
+let n=0; for (const mv of document.querySelectorAll('model-viewer')) { mv.addEventListener('load',()=>{ if(++n===2) setTimeout(()=>document.body.dataset.ready='1',1200)}); }
+document.getElementById('a').src=q.get('old')?`/old/${id}.glb`:`/models/${id}.glb`;
+document.getElementById('b').src=`/models/${id}.glb`;
+</script>

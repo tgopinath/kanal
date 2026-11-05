@@ -3,51 +3,132 @@
   "id": "lettuce-cup",
   "src": "objaverse/2df67b7644d742d2b0c198bedfd7c3f2.glb",
   "size": 0.24,
-  "maxTris": 60000
+  "maxTris": 60000,
+  "look": {
+   "rough": [
+    0.42,
+    0.72
+   ],
+   "normal": 1.0,
+   "coat": 0.25,
+   "coatRough": 0.3,
+   "sat": 1.06
+  }
  },
  {
   "id": "sashimi",
   "src": "objaverse/419d358d21a24b2cb0ef4d50b849e268.glb",
   "size": 0.32,
-  "maxTris": 80000,
-  "trimBelow": 0.06
+  "maxTris": 56000,
+  "trimBelow": 0.06,
+  "look": {
+   "rough": [
+    0.28,
+    0.6
+   ],
+   "normal": 0.7,
+   "coat": 0.7,
+   "coatRough": 0.12,
+   "sat": 1.05
+  }
  },
  {
   "id": "flatbread",
   "src": "objaverse/0e6df6c6ca5a4140b5ace6a957046ce9.glb",
   "size": 0.34,
   "maxTris": 60000,
-  "trimBelow": 0.3
+  "trimBelow": 0.3,
+  "look": {
+   "rough": [
+    0.6,
+    0.86
+   ],
+   "normal": 1.4,
+   "sat": 1.06
+  }
  },
  {
   "id": "prime-rib",
   "src": "objaverse/0d72ef49ea764361a865207e4d0d8252.glb",
   "size": 0.42,
-  "maxTris": 60000
+  "maxTris": 60000,
+  "look": {
+   "rough": [
+    0.38,
+    0.82
+   ],
+   "normal": 1.3,
+   "coat": 0.35,
+   "coatRough": 0.28,
+   "sat": 1.08
+  }
  },
  {
   "id": "bistecca",
   "src": "objaverse/969285ae788c41cd914387cecf088708.glb",
   "size": 0.32,
-  "maxTris": 60000
+  "maxTris": 60000,
+  "look": {
+   "rough": [
+    0.38,
+    0.82
+   ],
+   "normal": 1.3,
+   "coat": 0.35,
+   "coatRough": 0.28,
+   "sat": 1.08
+  }
  },
  {
   "id": "pear-tart",
   "src": "objaverse/8bd39f148aab472397a68930839a9aac.glb",
   "size": 0.24,
-  "maxTris": 70000
+  "maxTris": 70000,
+  "look": {
+   "rough": [
+    0.3,
+    0.75
+   ],
+   "normal": 1.0,
+   "coat": 0.35,
+   "coatRough": 0.2,
+   "sat": 1.06,
+   "glow": 0.58
+  }
  },
  {
   "id": "apple-pie",
   "src": "objaverse/1e96b1fd3d3c42f3aef4f3cdb6051746.glb",
   "size": 0.21,
-  "maxTris": 50000
+  "maxTris": 50000,
+  "look": {
+   "rough": [
+    0.45,
+    0.8
+   ],
+   "normal": 1.2,
+   "coat": 0.2,
+   "coatRough": 0.2,
+   "sat": 1.06,
+   "glow": 0.58
+  }
  },
  {
   "id": "strawberry-tart",
   "src": "objaverse/09af8624f011406c974b7cd4678650db.glb",
   "size": 0.12,
-  "maxTris": 40000
+  "maxTris": 40000,
+  "look": {
+   "rough": [
+    0.35,
+    0.8
+   ],
+   "normal": 0.9,
+   "coat": 0.3,
+   "coatRough": 0.22,
+   "sat": 1.06,
+   "glow": 0.6
+  }
  },
  {
   "id": "carrot-cake",

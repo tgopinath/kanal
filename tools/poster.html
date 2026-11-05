@@ -1,7 +1,7 @@
 <!doctype html><meta charset="utf-8"><title>poster</title>
-<style>html,body{margin:0;background:transparent}model-viewer{width:640px;height:640px;background:transparent;--poster-color:transparent}</style>
+<style>html,body{margin:0;background:transparent}model-viewer{width:1024px;height:1024px;background:transparent;--poster-color:transparent}</style>
 <model-viewer id="mv" interaction-prompt="none" camera-orbit="25deg 58deg auto" field-of-view="24deg"
-  environment-image="/env/studio.hdr" exposure="1.05" shadow-intensity="1.2" shadow-softness="0.8"></model-viewer>
+  environment-image="/env/hearth.hdr" tone-mapping="neutral" exposure="0.95" shadow-intensity="1" shadow-softness="0.4"></model-viewer>
 <script type="module">
 import '@google/model-viewer';
 const mv=document.getElementById('mv'); const id=new URLSearchParams(location.search).get('id');

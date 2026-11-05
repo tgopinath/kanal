@@ -151,7 +151,7 @@ function viewDish(id) {
       <model-viewer id="mv" src="${model(d)}" ios-src="${usdz(d)}" poster="${poster(d)}" alt="3D scan of ${esc(d.name)}. Drag to turn it."
         camera-controls auto-rotate auto-rotate-delay="1500" rotation-per-second="18deg" interaction-prompt="none"
         camera-orbit="30deg 62deg auto" min-camera-orbit="auto 20deg auto" max-camera-orbit="auto 84deg auto"
-        environment-image="${asset('env/studio.hdr')}" exposure="1.05" shadow-intensity="1.1" shadow-softness="0.9"
+        environment-image="${asset('env/hearth.hdr')}" tone-mapping="neutral" exposure="0.95" shadow-intensity="1" shadow-softness="0.4"
         ar ar-modes="webxr scene-viewer quick-look" ar-placement="floor" ar-scale="fixed" touch-action="pan-y" loading="eager">
         <div class="mv-progress" slot="progress-bar"><span></span></div>
         <button slot="ar-button" hidden></button>
