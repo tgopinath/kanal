@@ -1,0 +1,142 @@
+[
+ {
+  "id": "classic-burger",
+  "file": "classic-burger.glb",
+  "title": "Burger",
+  "author": "Whynotmake (@Whynotmake)",
+  "url": "https://sketchfab.com/3d-models/aebff3e80d30473b83cb5306d5e35c9c",
+  "license": {
+   "name": "CC BY 4.0 (Sketchfab \"CC Attribution\")",
+   "url": "https://creativecommons.org/licenses/by/4.0/"
+  },
+  "uid": "aebff3e80d30473b83cb5306d5e35c9c",
+  "tris": 99932,
+  "notes": "Classic beef burger: sesame-free bun, patty, lettuce, sauce. Clean single object, no ground. Y-up, upright, base roughly at Y=0. Scale in arbitrary units (~18 wide), rescale. Texture 1024 px. File 4.9 MB. Source: Objaverse mirror glbs/000-027/aebff3e80d30473b83cb5306d5e35c9c.glb."
+ },
+ {
+  "id": "double-stack-burger",
+  "file": "double-stack-burger.glb",
+  "title": "Big Mac",
+  "author": "Aaron Theesfeld (@theesfeld)",
+  "url": "https://sketchfab.com/3d-models/7aeeaa237c6a48c39d0aeef7fc845ecb",
+  "license": {
+   "name": "CC BY 4.0 (Sketchfab \"CC Attribution\")",
+   "url": "https://creativecommons.org/licenses/by/4.0/"
+  },
+  "uid": "7aeeaa237c6a48c39d0aeef7fc845ecb",
+  "tris": 608022,
+  "notes": "Double-patty, triple-bun burger (scan of a McDonald's Big Mac; no logo visible). Sits on a flat square of scanned wrapper paper that needs trimming. Y-up, upright. Heavy: 608k tris, ~31 MB, needs decimation. Texture 1024 px. File 26.8 MB. Source: Objaverse mirror glbs/000-027/7aeeaa237c6a48c39d0aeef7fc845ecb.glb."
+ },
+ {
+  "id": "cheeseburger",
+  "file": "cheeseburger.glb",
+  "title": "Cheese Burger Garry's",
+  "author": "vladFo (@vladFo)",
+  "url": "https://sketchfab.com/3d-models/2fda9e598122434ab67865d2549bd218",
+  "license": {
+   "name": "CC BY 4.0 (Sketchfab \"CC Attribution\")",
+   "url": "https://creativecommons.org/licenses/by/4.0/"
+  },
+  "uid": "2fda9e598122434ab67865d2549bd218",
+  "tris": 360864,
+  "notes": "Plain cheeseburger with soft bun (Garry's cafe). Clean, no ground. Y-up, upright. Filling mostly hidden by the bun. 361k tris, decimate. Texture 1024 px. File 13.2 MB. Source: Objaverse mirror glbs/000-083/2fda9e598122434ab67865d2549bd218.glb."
+ },
+ {
+  "id": "vegan-double-burger",
+  "file": "vegan-double-burger.glb",
+  "title": "Double Decker Vegan Burger @ Apuro Vegan Bar",
+  "author": "jcamilophoto (@jcamilophoto)",
+  "url": "https://sketchfab.com/3d-models/f0c6f83eda934bc59e0d1d9a7cdc4b58",
+  "license": {
+   "name": "CC BY 4.0 (Sketchfab \"CC Attribution\")",
+   "url": "https://creativecommons.org/licenses/by/4.0/"
+  },
+  "uid": "f0c6f83eda934bc59e0d1d9a7cdc4b58",
+  "tris": 499999,
+  "notes": "Double-decker vegan burger on a wooden serving board. Burger sits on a scanned wooden board, trim it or keep it as the serving board. Y-up, upright. 500k tris, decimate. Texture 1024 px. File 21.5 MB. Source: Objaverse mirror glbs/000-149/f0c6f83eda934bc59e0d1d9a7cdc4b58.glb."
+ },
+ {
+  "id": "crispy-chicken-burger",
+  "file": "crispy-chicken-burger.glb",
+  "title": "Crispy Chicken Burger",
+  "author": "ARtemis 3D (@ARtemis3D)",
+  "url": "https://sketchfab.com/3d-models/37007daa91f34701ac6165c553d59200",
+  "license": {
+   "name": "CC BY 4.0 (Sketchfab \"CC Attribution\")",
+   "url": "https://creativecommons.org/licenses/by/4.0/"
+  },
+  "uid": "37007daa91f34701ac6165c553d59200",
+  "tris": 72680,
+  "notes": "Crispy chicken burger with fries on a white plate. Scanned as a full plate (plate + fries); no table. Y-up, upright, real-world metres (~0.26 m plate). Burger is small within the plate. Texture 1024 px. File 3.0 MB. Source: Objaverse mirror glbs/000-059/37007daa91f34701ac6165c553d59200.glb."
+ },
+ {
+  "id": "fries-bowl",
+  "file": "fries-bowl.glb",
+  "title": "OC Chips (Reduced Quality)",
+  "author": "Jimmy Gunawan (@jimmygunawan)",
+  "url": "https://sketchfab.com/3d-models/24903f39680a4ed18fff062261ae1a9e",
+  "license": {
+   "name": "CC BY 4.0 (Sketchfab \"CC Attribution\")",
+   "url": "https://creativecommons.org/licenses/by/4.0/"
+  },
+  "uid": "24903f39680a4ed18fff062261ae1a9e",
+  "tris": 24999,
+  "notes": "Thick-cut chips/fries in a bowl (Ume Burger). Bowl included, no table. Y-up, upright, real-world metres (~0.16 m). \"Reduced quality\" upload: 25k tris, 1024 texture. Texture 1024 px. File 2.4 MB. Source: Objaverse mirror glbs/000-063/24903f39680a4ed18fff062261ae1a9e.glb. A small dark spike of mesh hangs under the bowl and needs trimming."
+ },
+ {
+  "id": "chicken-nugget",
+  "file": "chicken-nugget.glb",
+  "title": "Chicken Nugget",
+  "author": "Laser Design (@Laserdesign)",
+  "url": "https://sketchfab.com/3d-models/511db88f24e04eb1be8b0c0c080e1e5e",
+  "license": {
+   "name": "CC BY 4.0 (Sketchfab \"CC Attribution\")",
+   "url": "https://creativecommons.org/licenses/by/4.0/"
+  },
+  "uid": "511db88f24e04eb1be8b0c0c080e1e5e",
+  "tris": 10000,
+  "notes": "Single breaded chicken nugget (Artec Space Spider scan). Clean single object, no ground. Arbitrary orientation (no natural up), scale in mm (~68). Single piece: duplicate for a portion. Texture 1024 px. File 1.3 MB. Source: Objaverse mirror glbs/000-098/511db88f24e04eb1be8b0c0c080e1e5e.glb."
+ },
+ {
+  "id": "hot-dog",
+  "file": "hot-dog.glb",
+  "title": "hotdog",
+  "author": "ryuki miura (@ryukimiura)",
+  "url": "https://sketchfab.com/3d-models/184096cd9c664d38b5889e432714381c",
+  "license": {
+   "name": "CC BY 4.0 (Sketchfab \"CC Attribution\")",
+   "url": "https://creativecommons.org/licenses/by/4.0/"
+  },
+  "uid": "184096cd9c664d38b5889e432714381c",
+  "tris": 2752,
+  "notes": "Hot dog: sausage in a split bun with relish/sauce. Clean, no ground. Lies flat, long axis along X, Y-up. Retopologised scan (2.75k tris) with baked normal + roughness maps. Texture 1024 px. File 3.2 MB. Source: Objaverse mirror glbs/000-126/184096cd9c664d38b5889e432714381c.glb."
+ },
+ {
+  "id": "milkshake",
+  "file": "milkshake.glb",
+  "title": "Milgshake",
+  "author": "ra_fuq (@rafuq)",
+  "url": "https://sketchfab.com/3d-models/c2ba2daa94f4486696e431226c7aac7f",
+  "license": {
+   "name": "CC BY 4.0 (Sketchfab \"CC Attribution\")",
+   "url": "https://creativecommons.org/licenses/by/4.0/"
+  },
+  "uid": "c2ba2daa94f4486696e431226c7aac7f",
+  "tris": 1784,
+  "notes": "Chocolate milkshake with whipped cream in a plastic cup. Clean, no ground, Y-up, upright. Author calls it a failed scan: only 1.8k tris, the straw is a thin black spike artifact (remove it), and the cup is a bit lumpy. Weakest item. Sketchfab thumbnail now gives Access Denied, so the source page may be gone. Texture 1024 px. File 1.1 MB. Source: Objaverse mirror glbs/000-143/c2ba2daa94f4486696e431226c7aac7f.glb."
+ },
+ {
+  "id": "candy-cane-brownie",
+  "file": "candy-cane-brownie.glb",
+  "title": "Candy Cane Brownie",
+  "author": "jtressle (@jtressle)",
+  "url": "https://sketchfab.com/3d-models/b5d46802166d4201873fc90bbf318924",
+  "license": {
+   "name": "CC BY 4.0 (Sketchfab \"CC Attribution\")",
+   "url": "https://creativecommons.org/licenses/by/4.0/"
+  },
+  "uid": "b5d46802166d4201873fc90bbf318924",
+  "tris": 129566,
+  "notes": "Chocolate brownie square topped with crushed candy cane. Clean, no ground. Y-up, upright. 130k tris. Texture 1024 px. File 5.2 MB. Source: Objaverse mirror glbs/000-086/b5d46802166d4201873fc90bbf318924.glb."
+ }
+]

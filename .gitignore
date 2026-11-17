@@ -12,3 +12,5 @@ ios/build
 ios/Web
 .DS_Store
 *.apk
+models-src/**/*.jpg
+models-src/ios/

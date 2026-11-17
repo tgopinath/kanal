@@ -1,0 +1,17 @@
+/* Kanal native app looks (Kolam M3 kit on Android, Kolam iOS kit on iPhone). Scoped to html.k-android / html.k-ios,
+   which only the apps (or ?app=android / ?app=ios) set; the website never matches these rules. */
+html:is(.k-android, .k-ios) :is(.appnav, .topbar, .masthead-row, .skip) { display: none !important; }
+/* the table view is immersive: no top bar over the walnut */
+html:is(.k-android, .k-ios)[data-kanal-view="table"] :is(.md-top-app-bar, .ios-navbar, .ios-largetitle) { display: none !important; }
+html.k-android #app { padding-bottom: calc(88px + var(--md-inset-bottom, 0px)); }
+html.k-ios #app { padding-bottom: calc(96px + env(safe-area-inset-bottom, 0px)); }
+html:is(.k-android, .k-ios)[data-kanal-view="table"] #app { padding-bottom: 0; }
+html.k-android .masthead, html.k-ios .masthead { padding-top: 8px; }
+/* M3 shapes for the menu's own pieces */
+html.k-android .dish-row .dish-link { border-radius: var(--md-sys-shape-corner-medium); }
+html.k-android .dish-thumb, html.k-android .dish-thumb img { border-radius: var(--md-sys-shape-corner-small); }
+html.k-android :is(.course-tabs a, .course-tab, .chip-tab) { border-radius: var(--md-sys-shape-corner-small); }
+html.k-ios .dish-thumb, html.k-ios .dish-thumb img { border-radius: 12px; }
+/* course tabs stick just under the native top bar */
+html.k-android .course-bar { top: calc(64px + var(--md-inset-top, 0px)); padding-top: 8px; z-index: 15; }
+html.k-ios .course-bar { top: calc(54px + var(--sat, env(safe-area-inset-top, 0px))); padding-top: 8px; z-index: 15; }

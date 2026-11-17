@@ -3,6 +3,16 @@
   "appName": "Kanal",
   "webDir": "dist",
   "backgroundColor": "#14100c",
-  "android": { "allowMixedContent": false },
-  "ios": { "contentInset": "never", "backgroundColor": "#14100c" }
+  "android": {
+    "allowMixedContent": false
+  },
+  "ios": {
+    "contentInset": "never",
+    "backgroundColor": "#14100c"
+  },
+  "plugins": {
+    "SystemBars": {
+      "insetsHandling": "css"
+    }
+  }
 }

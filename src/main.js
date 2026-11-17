@@ -8,6 +8,7 @@ import '@fontsource/cormorant-garamond/500-italic.css';
 import './kolam/tokens.css';
 import './kolam/kolam.css';
 import './styles.css';
+import './native.css';
 import '@google/model-viewer';
 
 import { RESTAURANT, COURSES, DISHES, ENV_CREDITS, VENUE_ID, VENUES, byId, inCourse, formatPrice, formatQty, lockupHTML } from './dishes.js';
@@ -15,6 +16,7 @@ import { icon, MARK } from './icons.js';
 import { Native, platform } from './native.js';
 import { mountTable } from './table.js';
 import * as Orders from './orders.js';
+import { initNativeUI, syncNativeUI } from './native-ui.js';
 
 const app = document.getElementById('app');
 const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -424,6 +426,8 @@ function route() {
   document.body.dataset.view = view || 'menu';
   const t = { dish: byId(id)?.name, table: 'On the table', order: 'Your order', about: 'About' }[view];
   document.title = t ? `${t} · ${RESTAURANT.name}` : `${RESTAURANT.name} — Table Menu`;
+  const v = view === 'shortlist' ? 'order' : ['dish', 'table', 'order', 'about'].includes(view) ? view : 'menu';
+  syncNativeUI(v, { title: v === 'menu' ? RESTAURANT.name : v === 'about' ? `About ${RESTAURANT.name}` : v === 'order' ? 'Your order' : t || RESTAURANT.name });
 }
 let lastHash = location.hash;
 function rerender() { const y = scrollY; route(); scrollTo(0, y); }
@@ -449,6 +453,7 @@ Orders.subscribe(() => {
 });
 
 if (location.hash === '' && scan?.table) location.hash = '#/';
+initNativeUI({ tableLabel: () => (table ? `Table ${table} · ${RESTAURANT.service}` : ''), tableHref: () => `#/table/${current.tableId || DISHES[0].id}` });
 route();
 if (scan?.error) toast(scan.error);
 else if (scan?.table) toast(`Welcome to ${RESTAURANT.name}. You’re at Table ${scan.table}.`);
